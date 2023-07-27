@@ -99,7 +99,37 @@ export default function Main() {
       <ToolbarContainerDiv>
         <Toolbar />
       </ToolbarContainerDiv>
-      
+      <ListContainerDiv>
+        {sceneList.map((scene, sceneIndex) => (
+          <ListItemButton
+            dense
+            component="li"
+            key={sceneIndex}
+            onClick={() => handleToggle(scene)}
+          >
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={checkedList.includes(scene)}
+                tabIndex={-1}
+                disableRipple
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <TruncateSpan title={scene.title}>{scene.title}</TruncateSpan>
+              }
+              secondary={
+                <>
+                  <TemplateDescriptionSpan title={scene.promptTemplate}>
+                    {scene.promptTemplate}
+                  </TemplateDescriptionSpan>
+                </>
+              }
+            />
+          </ListItemButton>
+        ))}
+      </ListContainerDiv>
     </LayoutDiv>
   )
 }
