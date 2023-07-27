@@ -2,22 +2,25 @@ import { IconButton, InputBase, Tooltip } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add"
 import SettingsIcon from "@mui/icons-material/Settings"
-// import ChecklistIcon from "@mui/icons-material/Checklist"
+import ChecklistIcon from "@mui/icons-material/Checklist"
 import styled from "styled-components"
 
 const ToolbarTitleDiv = styled.div``
 
 const ToolbarActionDiv = styled.div`
   display: flex;
+  align-items: center;
 `
 
 const SearchContainerDiv = styled.div`
   display: flex;
+  font-size: 12px;
   align-items: center;
-  border: 1px solid red;
-  border-radius: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   padding: 0 8px;
-  margin: 0 16px;
+  margin: 0 8px;
+  height: 24px;
 `
 
 const SearchInput = styled(InputBase)`
@@ -26,7 +29,15 @@ const SearchInput = styled(InputBase)`
   }
 `
 
+const SearchInputIcon = styled(SearchIcon)`
+  font-size: 20px;
+  color: #ccc;
+`
+
 const ActionBtnGroupDiv = styled.div`
+  button {
+    color: #333;
+  }
   button + button {
     margin: 0 0 0 4px;
   }
@@ -34,38 +45,48 @@ const ActionBtnGroupDiv = styled.div`
 
 export default function Toolbar() {
   const createScene = () => {
-    const title = prompt('Please Enter Scene Title') || 'default title';
-    const promptTemplate = prompt('Please Enter Prompt Template') || 'default template';
-    chrome.storage.local.get('scene', function (data) {
-      const sceneList: Scene[] = data.scene || [];
+    const title = prompt("Please Enter Scene Title")
+    if (!title) return
+    const promptTemplate = prompt("Please Enter Prompt Template")
+    if (!promptTemplate) return
+    chrome?.storage?.local.get("scenes").then((data) => {
+      const sceneList: Scene[] = data.scenes || []
       sceneList.push({
         id: Symbol(),
         title,
         promptTemplate
-      });
-      chrome.storage.local.set({ 'scene': sceneList }, function () {
-        alert('Scene create success!');
-        location.reload();
-      });
-    });
+      })
+      chrome.storage.local.set({ scenes: sceneList }).then(() => {
+        alert("Scene create success!")
+        location.reload()
+      })
+    })
   }
 
   return (
     <>
       <ToolbarTitleDiv>Scene List</ToolbarTitleDiv>
       <ToolbarActionDiv>
-        <SearchContainerDiv>
-          <SearchIcon />
-          <SearchInput
-            size="small"
-            placeholder="Search"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </SearchContainerDiv>
-        <ActionBtnGroupDiv onClick={createScene}>
-          <Tooltip title="Create a new Scene">
+        {false && (
+          <>
+            <SearchContainerDiv>
+              <SearchInputIcon />
+              <SearchInput
+                placeholder="Search"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </SearchContainerDiv>
+          </>
+        )}
+        <ActionBtnGroupDiv>
+          <Tooltip title="Create a new Scene" onClick={createScene}>
             <IconButton color="secondary" aria-label="Create a new scene">
               <AddIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Batch operate">
+            <IconButton color="secondary" aria-label="Batch operate">
+              <ChecklistIcon />
             </IconButton>
           </Tooltip>
           {/* <Tooltip title="Batch operate">

@@ -1,18 +1,28 @@
-import { Dispatch, SetStateAction, createContext, useEffect } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import Toolbar from "./components/Toolbar"
-// import BottomTab from "./components/BottomTab"
+import {
+  Checkbox,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText
+} from "@mui/material"
 
-export const STORAGE_KEY = "scenes"
+enum Mode {
+  Create,
+  Edit,
+  List
+}
 
 const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
   height: 360px;
-  width: 600px;
+  width: 400px;
   border-radius: 12px;
   border: 1px solid pink;
-  padding: 16px;
+  padding: 8px;
 `
 
 const ToolbarContainerDiv = styled.div`
@@ -23,42 +33,73 @@ const ToolbarContainerDiv = styled.div`
 
 const ListContainerDiv = styled.div`
   height: 100%;
+  max-height: 500px;
+  overflow: auto;
 `
 
-// const BottomTabContainerDiv = styled.div``
+const TemplateDescriptionSpan = styled.span`
+  color: #ccc;
+`
 
-interface ITabContext {
-  currentTab: number | null;
-  setCurrentTab: Dispatch<SetStateAction<number>>;
-}
-
-export const TabContext = createContext<ITabContext>({
-  currentTab: null,
-  setCurrentTab: () => {}
-})
+const TruncateSpan = styled.span`
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 
 export default function Main() {
-  // const [currentTab, setCurrentTab] = useState<number>(0);
+  const mock: Scene[] = [{
+    id: Symbol(),
+    promptTemplate: '模板 - 🐱',
+    title: '🐱🐱🐱🐱🐱'
+  }, {
+    id: Symbol(),
+    promptTemplate: '模板 - 🐶',
+    title: '🐶🐶🐶🐶🐶'
+  }, {
+    id: Symbol(),
+    promptTemplate: '模板 - 🐯',
+    title: '🐯🐯🐯🐯🐯'
+  }, {
+    id: Symbol(),
+    promptTemplate: '模板 - 🐼',
+    title: '🐼🐼🐼🐼🐼'
+  }, {
+    id: Symbol(),
+    promptTemplate: '模板 - 🐲',
+    title: '🐲🐲🐲🐲🐲'
+  }]
+  
+  const [sceneList, setSceneList] = useState<Scene[]>(mock)
+  const [checkedList, setCheckedList] = useState<Scene[]>([])
+
   useEffect(() => {
-    console.log('chrome', chrome)
-    chrome?.storage?.local.get(STORAGE_KEY).then((scenes) => {
-      console.log('scenes:', scenes)
+    chrome?.storage?.local.get("scenes").then((data) => {
+      setSceneList(data.scenes || [])
     })
   }, [])
+
+  const handleToggle = (scene: Scene) => {
+    const index = checkedList.indexOf(scene)
+    console.log('index', index)
+    if (index !== -1) {
+      checkedList.splice(index, 1)
+    } else {
+      checkedList.push(scene)
+    }
+    setCheckedList([...checkedList])
+  }
+
+  const [mode, setMode] = useState<Mode> (Mode.List)
 
   return (
     <LayoutDiv>
       <ToolbarContainerDiv>
         <Toolbar />
       </ToolbarContainerDiv>
-      {/* <TabContext.Provider value={{ currentTab, setCurrentTab }}> */}
-        <ListContainerDiv>
-          
-        </ListContainerDiv>
-        {/* <BottomTabContainerDiv>
-          <BottomTab />
-        </BottomTabContainerDiv>
-      </TabContext.Provider> */}
+      
     </LayoutDiv>
   )
 }
