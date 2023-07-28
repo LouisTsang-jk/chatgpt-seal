@@ -12,7 +12,7 @@ export default defineConfig({
   base: './',
   resolve: {
     alias: [
-      { find: '/@', replacement: resolve(__dirname, 'src/decorators') }
+      { find: '@', replacement: resolve(__dirname, 'src') }
     ]
   },
   build: {

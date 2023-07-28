@@ -1,29 +1,14 @@
-import { useEffect, useState } from "react"
+import { ChangeEvent, useContext, useEffect } from "react"
 import styled from "styled-components"
 import Toolbar from "./components/Toolbar"
 import {
   Checkbox,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText
 } from "@mui/material"
+import { DataContext, StorageKey } from "@/DataContext"
 
-enum Mode {
-  Create,
-  Edit,
-  List
-}
-
-const LayoutDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 360px;
-  width: 400px;
-  border-radius: 12px;
-  border: 1px solid pink;
-  padding: 8px;
-`
 
 const ToolbarContainerDiv = styled.div`
   display: flex;
@@ -39,6 +24,10 @@ const ListContainerDiv = styled.div`
 
 const TemplateDescriptionSpan = styled.span`
   color: #ccc;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 `
 
 const TruncateSpan = styled.span`
@@ -50,79 +39,84 @@ const TruncateSpan = styled.span`
 `
 
 export default function Main() {
-  const mock: Scene[] = [{
-    id: Symbol(),
-    promptTemplate: '模板 - 🐱',
-    title: '🐱🐱🐱🐱🐱'
-  }, {
-    id: Symbol(),
-    promptTemplate: '模板 - 🐶',
-    title: '🐶🐶🐶🐶🐶'
-  }, {
-    id: Symbol(),
-    promptTemplate: '模板 - 🐯',
-    title: '🐯🐯🐯🐯🐯'
-  }, {
-    id: Symbol(),
-    promptTemplate: '模板 - 🐼',
-    title: '🐼🐼🐼🐼🐼'
-  }, {
-    id: Symbol(),
-    promptTemplate: '模板 - 🐲',
-    title: '🐲🐲🐲🐲🐲'
-  }]
-  
-  const [sceneList, setSceneList] = useState<Scene[]>(mock)
-  const [checkedList, setCheckedList] = useState<Scene[]>([])
+  const mock: Template[] = [
+    {
+      id: Symbol(),
+      body: "模板 - 🐱",
+      title: "🐱🐱🐱🐱🐱",
+      checked: false
+    },
+    {
+      id: Symbol(),
+      body: "模板 - 🐶",
+      title: "🐶🐶🐶🐶🐶",
+      checked: false
+    },
+    {
+      id: Symbol(),
+      body: "模板 - 🐯",
+      title: "🐯🐯🐯🐯🐯",
+      checked: false
+    },
+    {
+      id: Symbol(),
+      body: "模板 - 🐼",
+      title: "🐼🐼🐼🐼🐼",
+      checked: false
+    },
+    {
+      id: Symbol(),
+      body: "模板 - 🐲",
+      title: "🐲🐲🐲🐲🐲",
+      checked: false
+    }
+  ]
+
+  const { templateList, setTemplateList } = useContext(DataContext)
 
   useEffect(() => {
-    chrome?.storage?.local.get("scenes").then((data) => {
-      setSceneList(data.scenes || [])
+    setTemplateList(mock)
+    chrome?.storage?.local.get(StorageKey).then((data) => {
+      // setSceneList(data.scenes || [])
+      setTemplateList(data[StorageKey] || [])
     })
   }, [])
 
-  const handleToggle = (scene: Scene) => {
-    const index = checkedList.indexOf(scene)
-    console.log('index', index)
-    if (index !== -1) {
-      checkedList.splice(index, 1)
-    } else {
-      checkedList.push(scene)
-    }
-    setCheckedList([...checkedList])
+  const handleToggle = (template: Template) => {
+    console.log('handleToggle:', template)
+    template.checked = !template.checked
+    setTemplateList([...templateList])
   }
 
-  const [mode, setMode] = useState<Mode> (Mode.List)
-
   return (
-    <LayoutDiv>
+    <>
       <ToolbarContainerDiv>
         <Toolbar />
       </ToolbarContainerDiv>
       <ListContainerDiv>
-        {sceneList.map((scene, sceneIndex) => (
+        {templateList.map((template, templateIndex: number) => (
           <ListItemButton
             dense
             component="li"
-            key={sceneIndex}
-            onClick={() => handleToggle(scene)}
+            key={templateIndex}
+            onClick={() => handleToggle(template)}
           >
             <ListItemIcon>
               <Checkbox
-                edge="start"
-                checked={checkedList.includes(scene)}
-                tabIndex={-1}
-                disableRipple
+                checked={template.checked}
+                inputProps={{ "aria-label": "controlled" }}
               />
             </ListItemIcon>
             <ListItemText
               primary={
-                <TruncateSpan title={scene.title}>{scene.title}</TruncateSpan>
+                <TruncateSpan title={template.title}>
+                  {template.title}
+                </TruncateSpan>
               }
               secondary={
                 <>
-                  <TemplateDescriptionSpan title={scene.promptTemplate}>
-                    {scene.promptTemplate}
+                  <TemplateDescriptionSpan title={template.body}>
+                    {template.body}
                   </TemplateDescriptionSpan>
                 </>
               }
@@ -130,6 +124,6 @@ export default function Main() {
           </ListItemButton>
         ))}
       </ListContainerDiv>
-    </LayoutDiv>
+    </>
   )
 }
