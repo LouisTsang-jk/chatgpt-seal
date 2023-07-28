@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'scene'
 
 interface Scene {
-  id: Symbol
+  id: string
   title: string
   promptTemplate: string
 }

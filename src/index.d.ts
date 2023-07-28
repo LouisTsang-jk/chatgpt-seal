@@ -1,5 +1,5 @@
 declare interface Template {
-  id: Symbol
+  id: string
   title: string
   body: string
   checked?: boolean

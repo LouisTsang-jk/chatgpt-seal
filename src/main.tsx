@@ -5,11 +5,20 @@ import "./index.css"
 import Main from "./views/Main"
 import styled from "styled-components"
 import { DataProvider } from "./DataContext"
+import Editor from "./views/Editor"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />
+  },
+  {
+    path: 'create',
+    element: <Editor />
+  },
+  {
+    path: 'edit/:id',
+    element: <Editor />
   },
   {
     path: "setting",

@@ -1,9 +1,11 @@
-import { IconButton, InputBase, Tooltip } from "@mui/material"
+import { IconButton, InputBase, ToggleButton, Tooltip } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add"
 import SettingsIcon from "@mui/icons-material/Settings"
 import ChecklistIcon from "@mui/icons-material/Checklist"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
+import { useId, useState } from "react"
 
 const ToolbarTitleDiv = styled.div``
 
@@ -35,6 +37,7 @@ const SearchInputIcon = styled(SearchIcon)`
 `
 
 const ActionBtnGroupDiv = styled.div`
+  margin-bottom: 8px;
   button {
     color: #333;
   }
@@ -44,6 +47,8 @@ const ActionBtnGroupDiv = styled.div`
 `
 
 export default function Toolbar() {
+  const [selected, setSelected] = useState(false)
+
   const createScene = () => {
     const title = prompt("Please Enter Scene Title")
     if (!title) return
@@ -52,7 +57,7 @@ export default function Toolbar() {
     chrome?.storage?.local.get("scenes").then((data) => {
       const sceneList: Scene[] = data.scenes || []
       sceneList.push({
-        id: Symbol(),
+        id: useId(),
         title,
         promptTemplate
       })
@@ -79,15 +84,29 @@ export default function Toolbar() {
           </>
         )}
         <ActionBtnGroupDiv>
-          <Tooltip title="Create a new Scene" onClick={createScene}>
-            <IconButton color="secondary" aria-label="Create a new scene">
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
+          <Link to="/create">
+            <Tooltip title="Create a new Scene">
+              <IconButton color="secondary" aria-label="Create a new scene">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Tooltip title="Batch operate">
-            <IconButton color="secondary" aria-label="Batch operate">
+            <ToggleButton
+              value="check"
+              aria-label="Batch operate"
+              color="secondary"
+              selected={selected}
+              sx={{
+                border: 0,
+                borderRadius: "50%",
+                padding: "8px",
+                marginLeft: "4px"
+              }}
+              onChange={() => setSelected(!selected)}
+            >
               <ChecklistIcon />
-            </IconButton>
+            </ToggleButton>
           </Tooltip>
           {/* <Tooltip title="Batch operate">
             <IconButton color="secondary" aria-label="Batch operate">
