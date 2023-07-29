@@ -1,23 +1,24 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createHashRouter, RouterProvider } from "react-router-dom"
 import "./index.css"
 import Main from "./views/Main"
 import styled from "styled-components"
 import { DataProvider } from "./DataContext"
 import Editor from "./views/Editor"
+import { SnackbarProvider } from "./common/SnackbarContext/SnackbarProvider"
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Main />
   },
   {
-    path: 'create',
+    path: "create",
     element: <Editor />
   },
   {
-    path: 'edit/:id',
+    path: "edit/:id",
     element: <Editor />
   },
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
 const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
-  height: 360px;
+  height: 340px;
   width: 400px;
   border-radius: 12px;
   border: 1px solid pink;
@@ -44,7 +45,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <DataProvider>
       <LayoutDiv>
-        <RouterProvider router={router} />
+        <SnackbarProvider>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </LayoutDiv>
     </DataProvider>
   </React.StrictMode>

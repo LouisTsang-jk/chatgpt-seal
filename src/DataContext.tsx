@@ -11,7 +11,8 @@ export const DataContext = createContext<{
   templateList: [],
   setTemplateList: (list) => { list },
   currentTemplate: null,
-  setCurrentTemplate: (current) => { current }
+  setCurrentTemplate: (current) => { current },
+  
 })
 
 export const DataProvider = ({ children }: any) => {

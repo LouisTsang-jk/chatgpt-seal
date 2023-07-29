@@ -1,11 +1,14 @@
-import { useEffect } from "react"
+import { useEffect, useId } from "react"
 import { Link, useParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn'
-import KeyboardCommandKeyIcon from '@mui/icons-material/KeyboardCommandKey';
 import { Grid } from "@mui/material"
+import useStorage from "@/hooks/useStorage"
+import { useSnackbar } from "@/common/SnackbarContext"
+import useKey from "react-use/lib/useKey"
+import { useNavigate } from "react-router-dom"
+import { StorageKey } from "@/DataContext"
 
 interface FormValues {
   title: string
@@ -14,19 +17,62 @@ interface FormValues {
 
 export default function Editor() {
   const { id } = useParams()
+
+  const newId = useId()
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<FormValues>()
 
-  useEffect(() => {
-    console.log("id:", id)
-  }, [])
+  useKey(
+    (event) => event.code === "Enter" && (event.ctrlKey || event.metaKey),
+    (event) => {
+      console.log("Command + Enter or Ctrl + Enter was pressed")
+      // 这里是你的提交表单的逻辑
+      event.preventDefault()
+      const values = getValues();
+      onSubmit(values)
+    },
+    {},
+    []
+  )
 
-  const onSubmit = (data: FormValues) => {
-    console.log(`Title: ${data.title}`)
-    console.log(`Template: ${data.template}`)
+  useKey(
+    (event) => event.code === "Escape",
+    (event) => {
+      event.preventDefault()
+      console.log("Esc Press")
+      navigate(-1)
+    },
+    {},
+    []
+  )
+
+  const [template, setTemplate] = useStorage<Template[]>(StorageKey)
+  const { openSnackbar } = useSnackbar()
+
+  function createTemplate(title: string, body: string) {
+    const newTemplate: Template = {
+      id: newId,
+      title,
+      body
+    }
+    console.log("标记:", template)
+    const updatedTemplate = template
+      ? [...template, newTemplate]
+      : [newTemplate]
+    setTemplate(updatedTemplate)
+    openSnackbar("Create Template Success")
+    location.reload()
+    navigate(-1)
+  }
+
+  function onSubmit(data: FormValues) {
+    createTemplate(data.title, data.template)
   }
 
   return (
@@ -74,13 +120,13 @@ export default function Editor() {
         spacing={2}
       >
         <Grid item>
-          <Button fullWidth component={Link} to="/"> Cancel </Button>
+          <Button fullWidth component={Link} to="/">
+            Cancel(Esc)
+          </Button>
         </Grid>
         <Grid item>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            Save
-            <KeyboardCommandKeyIcon />
-            <KeyboardReturnIcon />
+            Save( ⌘ + ↵ )
           </Button>
         </Grid>
       </Grid>

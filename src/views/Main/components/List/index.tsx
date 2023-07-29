@@ -7,6 +7,11 @@ import {
   ListItemText
 } from "@mui/material"
 import { DataContext, StorageKey } from "@/DataContext"
+import useStorage from "@/hooks/useStorage"
+
+interface ListProps {
+  isBatchOperationActive: boolean
+}
 
 const TemplateDescriptionSpan = styled.span`
   color: #ccc;
@@ -23,50 +28,18 @@ const TruncateSpan = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
-export default function List() {
+export default function List(props: ListProps) {
+  const { isBatchOperationActive } = props
+
   const { templateList, setTemplateList } = useContext(DataContext)
-  const mock: Template[] = [
-    {
-      id: '1',
-      body: "模板 - 🐱",
-      title: "🐱🐱🐱🐱🐱",
-      checked: false
-    },
-    {
-      id: '2',
-      body: "模板 - 🐶",
-      title: "🐶🐶🐶🐶🐶",
-      checked: false
-    },
-    {
-      id: '3',
-      body: "模板 - 🐯",
-      title: "🐯🐯🐯🐯🐯",
-      checked: false
-    },
-    {
-      id: '4',
-      body: "模板 - 🐼",
-      title: "🐼🐼🐼🐼🐼",
-      checked: false
-    },
-    {
-      id: '5',
-      body: "模板 - 🐲",
-      title: "🐲🐲🐲🐲🐲",
-      checked: false
-    }
-  ]
+
+  const [templateStorage] = useStorage<Template[]>(StorageKey)
+
   useEffect(() => {
-    setTemplateList(mock)
-    chrome?.storage?.local.get(StorageKey).then((data) => {
-      // setSceneList(data.scenes || [])
-      setTemplateList(data[StorageKey] || [])
-    })
-  }, [])
+    setTemplateList(templateStorage || [])
+  }, [templateStorage])
 
   const handleToggle = (template: Template) => {
-    console.log("handleToggle:", template)
     template.checked = !template.checked
     setTemplateList([...templateList])
   }
@@ -80,12 +53,14 @@ export default function List() {
           key={templateIndex}
           onClick={() => handleToggle(template)}
         >
-          <ListItemIcon>
-            <Checkbox
-              checked={template.checked}
-              inputProps={{ "aria-label": "controlled" }}
-            />
-          </ListItemIcon>
+          {isBatchOperationActive && (
+            <ListItemIcon>
+              <Checkbox
+                checked={template.checked || false}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </ListItemIcon>
+          )}
           <ListItemText
             primary={
               <TruncateSpan title={template.title}>

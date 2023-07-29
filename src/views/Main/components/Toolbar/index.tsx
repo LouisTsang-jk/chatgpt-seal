@@ -5,7 +5,12 @@ import SettingsIcon from "@mui/icons-material/Settings"
 import ChecklistIcon from "@mui/icons-material/Checklist"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { useId, useState } from "react"
+
+interface ToolbarProps {
+  isBatchOperationActive: boolean
+  handleBatchChange: (nextValue?: any) => void
+}
+
 
 const ToolbarTitleDiv = styled.div``
 
@@ -46,28 +51,9 @@ const ActionBtnGroupDiv = styled.div`
   }
 `
 
-export default function Toolbar() {
-  const [selected, setSelected] = useState(false)
-
-  const createScene = () => {
-    const title = prompt("Please Enter Scene Title")
-    if (!title) return
-    const promptTemplate = prompt("Please Enter Prompt Template")
-    if (!promptTemplate) return
-    chrome?.storage?.local.get("scenes").then((data) => {
-      const sceneList: Scene[] = data.scenes || []
-      sceneList.push({
-        id: useId(),
-        title,
-        promptTemplate
-      })
-      chrome.storage.local.set({ scenes: sceneList }).then(() => {
-        alert("Scene create success!")
-        location.reload()
-      })
-    })
-  }
-
+export default function Toolbar(props: ToolbarProps) {
+  const { isBatchOperationActive, handleBatchChange } = props
+  
   return (
     <>
       <ToolbarTitleDiv>Scene List</ToolbarTitleDiv>
@@ -96,23 +82,18 @@ export default function Toolbar() {
               value="check"
               aria-label="Batch operate"
               color="secondary"
-              selected={selected}
+              selected={isBatchOperationActive}
               sx={{
                 border: 0,
                 borderRadius: "50%",
                 padding: "8px",
                 marginLeft: "4px"
               }}
-              onChange={() => setSelected(!selected)}
+              onChange={handleBatchChange}
             >
               <ChecklistIcon />
             </ToggleButton>
           </Tooltip>
-          {/* <Tooltip title="Batch operate">
-            <IconButton color="secondary" aria-label="Batch operate">
-              <ChecklistIcon />
-            </IconButton>
-          </Tooltip> */}
           <Tooltip title="Setting">
             <IconButton color="secondary" aria-label="Setting">
               <SettingsIcon />
