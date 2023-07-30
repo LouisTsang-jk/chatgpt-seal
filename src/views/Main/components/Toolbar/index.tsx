@@ -12,9 +12,13 @@ import ChecklistIcon from "@mui/icons-material/Checklist"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { DataContext } from "@/DataContext"
+import { DataContext, StorageKey } from "@/DataContext"
 import { useContext, useEffect } from "react"
 import { useToggle } from "react-use"
+import Confirm from "../Confirm"
+import useStorage from "@/hooks/useStorage"
+import { useSnackbar } from "@/common/SnackbarContext"
+
 
 interface ToolbarProps {
   isBatchOperationActive: boolean
@@ -64,10 +68,15 @@ const ActionBtnGroupDiv = styled.div`
 
 export default function Toolbar(props: ToolbarProps) {
   const { isBatchOperationActive, handleBatchChange } = props
-  const { templateList } = useContext(DataContext)
+  const { templateList, setTemplateList } = useContext(DataContext)
 
   const [disabledBatchAction, disabledBatchActionChange] = useToggle(true)
+  const [deleteDialogVisible, deleteDialogVisibleChange] = useToggle(false)
 
+  const [, setTemplateStorage] = useStorage<Template[]>(StorageKey)
+
+  const { openSnackbar } = useSnackbar()
+  
   useEffect(() => {
     for (const template of templateList) {
       if (template.checked) {
@@ -78,10 +87,18 @@ export default function Toolbar(props: ToolbarProps) {
     disabledBatchActionChange(true)
   }, [templateList])
 
-  const handleBatchDelete = () => {
-    console.log('templateList:', templateList)
+  const handleBatchDelete = (agree: boolean) => {
+    if (!agree) return
+    const updateTemplateList = templateList.filter((template) => {
+      return !template.checked
+    })
+    setTemplateStorage([...updateTemplateList])
+    setTemplateList([...updateTemplateList])
+    openSnackbar("Delete Template Success")
+    deleteDialogVisibleChange(false)
+    handleBatchChange(false)
   }
-  
+
   return (
     <>
       <ToolbarTitleDiv>Template List</ToolbarTitleDiv>
@@ -134,10 +151,15 @@ export default function Toolbar(props: ToolbarProps) {
                 <IconButton
                   color="secondary"
                   disabled={disabledBatchAction}
-                  onClick={handleBatchDelete}
+                  onClick={() => deleteDialogVisibleChange(true)}
                   aria-label="Delete"
                 >
                   <DeleteOutlineIcon />
+                  <Confirm
+                    visible={deleteDialogVisible}
+                    text="Are you sure you want to delete the selected template?"
+                    handleConfirm={handleBatchDelete}
+                  />
                 </IconButton>
               </Box>
             </Tooltip>

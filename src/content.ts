@@ -5,29 +5,34 @@ suggestionInitial()
 function suggestionInitial() {
   const promptTextarea: HTMLTextAreaElement | null = document.querySelector("#prompt-textarea")
 
-  if (!promptTextarea) return
+  if (!promptTextarea || !promptTextarea.parentElement) return
+
+  let suggestionContainer = document.createElement('div')
+  suggestionContainer.id = 'suggestion-container'
+  promptTextarea.parentElement.appendChild(suggestionContainer)
 
   let currentSuggestionElement: HTMLElement | null = null
 
   promptTextarea.addEventListener('input', (event: Event) => {
     const target = event.target as HTMLTextAreaElement;
-    if (target.value.slice(-1) === '/' && promptTextarea.parentElement) {
-      showSuggestion(promptTextarea).then((suggestionElement) => {
+    if (target.value.slice(-1) === '/') {
+      showSuggestion(promptTextarea, suggestionContainer).then((suggestionElement) => {
         currentSuggestionElement = suggestionElement
-        promptTextarea.parentElement?.appendChild(suggestionElement)
+        suggestionContainer.appendChild(suggestionElement)
       })
     }
-    if (target.value.slice(-1) !== '/' && currentSuggestionElement ) {
-      promptTextarea.parentElement?.removeChild(currentSuggestionElement)
+    if (target.value.slice(-1) !== '/' && currentSuggestionElement && suggestionContainer.contains(currentSuggestionElement)) {
+      suggestionContainer.removeChild(currentSuggestionElement)
       currentSuggestionElement = null
     }
   });
 
+  styleInitial()
 }
 
-function showSuggestion(target: HTMLTextAreaElement) {
+function showSuggestion(target: HTMLTextAreaElement, container: HTMLElement) {
   return new Promise<HTMLElement>((resolve) => {
-    chrome?.storage.local.get(STORAGE_KEY).then((data) => {
+    chrome.storage.local.get([STORAGE_KEY], (data) => {
       const list = (data[STORAGE_KEY] || []) as Template[]
       const ul = document.createElement('ul')
       ul.id = 'prompt-suggestion'
@@ -44,18 +49,21 @@ function showSuggestion(target: HTMLTextAreaElement) {
         const index = liTarget.getAttribute('index')
         if (index === null || typeof (+index) !== 'number') return
         target.value = target.value.replace(/\/$/gm, list[+index].body)
-        target.parentElement?.removeChild(ul)
+        if (container.contains(ul)) {
+          container.removeChild(ul)
+        }
       })
-      target.parentElement?.appendChild(ul)
+      container.appendChild(ul)
       resolve(ul)
     })
   })
 }
 
-styleInitial()
-
 function styleInitial() {
+  const styleId = 'prompt-suggestion-style'
+  if (document.getElementById(styleId)) return
   const style = document.createElement('style')
+  style.id = styleId
   style.innerHTML = `
     #prompt-suggestion.chatgpt-template-prompt-suggestion li {
       cursor: pointer;
