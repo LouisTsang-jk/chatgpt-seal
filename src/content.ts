@@ -49,6 +49,11 @@ function showSuggestion(target: HTMLTextAreaElement, container: HTMLElement) {
         const index = liTarget.getAttribute('index')
         if (index === null || typeof (+index) !== 'number') return
         target.value = target.value.replace(/\/$/gm, list[+index].body)
+        const event = new Event('input', {
+          'bubbles': true,
+          'cancelable': true
+        });
+        target.dispatchEvent(event);
         if (container.contains(ul)) {
           container.removeChild(ul)
         }
@@ -65,9 +70,42 @@ function styleInitial() {
   const style = document.createElement('style')
   style.id = styleId
   style.innerHTML = `
+    #suggestion-container {
+      position: absolute;
+      transform: translateY(-100%);
+      top: -8px;
+      background: rgba(200,200,200,0.4);
+      width: 100%;
+      left: 0;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
     #prompt-suggestion.chatgpt-template-prompt-suggestion li {
+      position: relative;
       cursor: pointer;
       padding: 4px 8px;
+    }
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li:first-child {
+      padding: 8px 8px 4px 8px;
+      border-radius: 12px 12px 0 0;
+    }
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li:last-child {
+      padding: 4px 8px 8px 8px;
+      border-radius: 0 0 12px 12px;
+    }
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li::after {
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.8);
+      display: inline-block;
+      bottom: 0;
+      position: absolute;
+      left: 0;
+    }
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li:last-child::after {
+      content: "";
+      opacity: 0;
     }
     #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
       background-color: rgba(236,236,241, 1);
