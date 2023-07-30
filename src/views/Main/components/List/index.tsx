@@ -40,6 +40,7 @@ export default function List(props: ListProps) {
   }, [templateStorage])
 
   const handleToggle = (template: Template) => {
+    if (!isBatchOperationActive) return
     template.checked = !template.checked
     setTemplateList([...templateList])
   }
@@ -51,11 +52,13 @@ export default function List(props: ListProps) {
           dense
           component="li"
           key={templateIndex}
+          sx={{ padding: '0 8px' }}
           onClick={() => handleToggle(template)}
         >
           {isBatchOperationActive && (
             <ListItemIcon>
               <Checkbox
+                size="small"
                 checked={template.checked || false}
                 inputProps={{ "aria-label": "controlled" }}
               />

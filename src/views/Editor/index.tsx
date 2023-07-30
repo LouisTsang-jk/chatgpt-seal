@@ -1,5 +1,5 @@
-import { useEffect, useId } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useId } from "react"
+import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
@@ -16,7 +16,9 @@ interface FormValues {
 }
 
 export default function Editor() {
-  const { id } = useParams()
+  const [template, setTemplate] = useStorage<Template[]>(StorageKey)
+
+  // const { id } = useParams()
 
   const newId = useId()
   const navigate = useNavigate()
@@ -31,28 +33,24 @@ export default function Editor() {
   useKey(
     (event) => event.code === "Enter" && (event.ctrlKey || event.metaKey),
     (event) => {
-      console.log("Command + Enter or Ctrl + Enter was pressed")
-      // 这里是你的提交表单的逻辑
       event.preventDefault()
-      const values = getValues();
+      const values = getValues()
       onSubmit(values)
     },
     {},
-    []
+    [template]
   )
 
   useKey(
     (event) => event.code === "Escape",
     (event) => {
       event.preventDefault()
-      console.log("Esc Press")
       navigate(-1)
     },
     {},
     []
   )
 
-  const [template, setTemplate] = useStorage<Template[]>(StorageKey)
   const { openSnackbar } = useSnackbar()
 
   function createTemplate(title: string, body: string) {
@@ -61,7 +59,6 @@ export default function Editor() {
       title,
       body
     }
-    console.log("标记:", template)
     const updatedTemplate = template
       ? [...template, newTemplate]
       : [newTemplate]

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 function useStorage<T>(key: string): [T | null, (newData: T) => void] {
   const [data, setData] = useState<T | null>(null);
-
   const isChromeExtension = !!chrome?.storage?.local;
 
   useEffect(() => {
@@ -26,7 +25,6 @@ function useStorage<T>(key: string): [T | null, (newData: T) => void] {
       setData(newData);
     }
   };
-
   return [data, setStorageData];
 }
 

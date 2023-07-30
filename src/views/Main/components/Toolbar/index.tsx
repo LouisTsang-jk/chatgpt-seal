@@ -1,16 +1,25 @@
-import { IconButton, InputBase, ToggleButton, Tooltip } from "@mui/material"
+import {
+  Box,
+  IconButton,
+  InputBase,
+  ToggleButton,
+  Tooltip
+} from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add"
-import SettingsIcon from "@mui/icons-material/Settings"
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
 import ChecklistIcon from "@mui/icons-material/Checklist"
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { DataContext } from "@/DataContext"
+import { useContext, useEffect } from "react"
+import { useToggle } from "react-use"
 
 interface ToolbarProps {
   isBatchOperationActive: boolean
   handleBatchChange: (nextValue?: any) => void
 }
-
 
 const ToolbarTitleDiv = styled.div``
 
@@ -43,6 +52,8 @@ const SearchInputIcon = styled(SearchIcon)`
 
 const ActionBtnGroupDiv = styled.div`
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
   button {
     color: #333;
   }
@@ -53,10 +64,27 @@ const ActionBtnGroupDiv = styled.div`
 
 export default function Toolbar(props: ToolbarProps) {
   const { isBatchOperationActive, handleBatchChange } = props
+  const { templateList } = useContext(DataContext)
+
+  const [disabledBatchAction, disabledBatchActionChange] = useToggle(true)
+
+  useEffect(() => {
+    for (const template of templateList) {
+      if (template.checked) {
+        disabledBatchActionChange(false)
+        return
+      }
+    }
+    disabledBatchActionChange(true)
+  }, [templateList])
+
+  const handleBatchDelete = () => {
+    console.log('templateList:', templateList)
+  }
   
   return (
     <>
-      <ToolbarTitleDiv>Scene List</ToolbarTitleDiv>
+      <ToolbarTitleDiv>Template List</ToolbarTitleDiv>
       <ToolbarActionDiv>
         {false && (
           <>
@@ -71,8 +99,8 @@ export default function Toolbar(props: ToolbarProps) {
         )}
         <ActionBtnGroupDiv>
           <Link to="/create">
-            <Tooltip title="Create a new Scene">
-              <IconButton color="secondary" aria-label="Create a new scene">
+            <Tooltip title="Create a new Template">
+              <IconButton color="secondary" aria-label="Create a new template">
                 <AddIcon />
               </IconButton>
             </Tooltip>
@@ -94,11 +122,33 @@ export default function Toolbar(props: ToolbarProps) {
               <ChecklistIcon />
             </ToggleButton>
           </Tooltip>
-          <Tooltip title="Setting">
-            <IconButton color="secondary" aria-label="Setting">
-              <SettingsIcon />
-            </IconButton>
-          </Tooltip>
+          {isBatchOperationActive && (
+            <Tooltip
+              title={
+                disabledBatchAction
+                  ? "Please choose a template to delete"
+                  : "Delete"
+              }
+            >
+              <Box display="inline-flex">
+                <IconButton
+                  color="secondary"
+                  disabled={disabledBatchAction}
+                  onClick={handleBatchDelete}
+                  aria-label="Delete"
+                >
+                  <DeleteOutlineIcon />
+                </IconButton>
+              </Box>
+            </Tooltip>
+          )}
+          <Link to="/about">
+            <Tooltip title="Info">
+              <IconButton color="secondary" aria-label="Info">
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </ActionBtnGroupDiv>
       </ToolbarActionDiv>
     </>

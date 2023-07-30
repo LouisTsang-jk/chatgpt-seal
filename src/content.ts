@@ -1,10 +1,4 @@
-const STORAGE_KEY = 'scene'
-
-interface Scene {
-  id: string
-  title: string
-  promptTemplate: string
-}
+const STORAGE_KEY = 'templates'
 
 suggestionInitial()
 
@@ -13,35 +7,35 @@ function suggestionInitial() {
 
   if (!promptTextarea) return
 
-  // let suggestionElement = null
+  let currentSuggestionElement: HTMLElement | null = null
 
   promptTextarea.addEventListener('input', (event: Event) => {
     const target = event.target as HTMLTextAreaElement;
     if (target.value.slice(-1) === '/' && promptTextarea.parentElement) {
-      showSuggestion(promptTextarea).then(suggestionElement => {
-        console.log('show suggestion', suggestionElement);
-        // suggestionElement = suggestionElement
+      showSuggestion(promptTextarea).then((suggestionElement) => {
+        currentSuggestionElement = suggestionElement
+        promptTextarea.parentElement?.appendChild(suggestionElement)
       })
     }
-    // if (target.value.slice(-1) !== '/' ) {
-
-    // }
+    if (target.value.slice(-1) !== '/' && currentSuggestionElement ) {
+      promptTextarea.parentElement?.removeChild(currentSuggestionElement)
+      currentSuggestionElement = null
+    }
   });
 
 }
 
 function showSuggestion(target: HTMLTextAreaElement) {
-  return new Promise((resolve) => {
+  return new Promise<HTMLElement>((resolve) => {
     chrome?.storage.local.get(STORAGE_KEY).then((data) => {
-      console.log('storage:', data)
-      const list = (data.scene || []) as Scene[]
+      const list = (data[STORAGE_KEY] || []) as Template[]
       const ul = document.createElement('ul')
       ul.id = 'prompt-suggestion'
-      ul.className = 'chatgpt-scene-prompt-suggestion'
-      list.forEach((scene, sceneIndex) => {
+      ul.className = 'chatgpt-template-prompt-suggestion'
+      list.forEach((template, templateIndex) => {
         const li = document.createElement('li')
-        li.innerText = `${scene.title}`
-        li.setAttribute('index', `${sceneIndex}`)
+        li.innerText = `${template.title}`
+        li.setAttribute('index', `${templateIndex}`)
         ul.appendChild(li)
       })
       ul.addEventListener('click', (evt: MouseEvent) => {
@@ -49,7 +43,7 @@ function showSuggestion(target: HTMLTextAreaElement) {
         if (!liTarget) return
         const index = liTarget.getAttribute('index')
         if (index === null || typeof (+index) !== 'number') return
-        target.value = target.value.replace(/\/$/gm, list[+index].promptTemplate)
+        target.value = target.value.replace(/\/$/gm, list[+index].body)
         target.parentElement?.removeChild(ul)
       })
       target.parentElement?.appendChild(ul)
@@ -63,11 +57,11 @@ styleInitial()
 function styleInitial() {
   const style = document.createElement('style')
   style.innerHTML = `
-    #prompt-suggestion.chatgpt-scene-prompt-suggestion li {
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li {
       cursor: pointer;
       padding: 4px 8px;
     }
-    #prompt-suggestion.chatgpt-scene-prompt-suggestion li:hover  {
+    #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
       background-color: rgba(236,236,241, 1);
     }
   `

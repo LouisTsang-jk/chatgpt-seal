@@ -16,12 +16,12 @@ const ListContainerDiv = styled.div`
 `
 
 export default function Main() {
-  const [isBatchOperationActive, toggleisBatchOperationActive] = useToggle(false);
+  const [isBatchOperationActive, toggleIsBatchOperationActive] = useToggle(false);
   
   return (
     <>
       <ToolbarContainerDiv>
-        <Toolbar isBatchOperationActive={isBatchOperationActive} handleBatchChange={toggleisBatchOperationActive}  />
+        <Toolbar isBatchOperationActive={isBatchOperationActive} handleBatchChange={toggleIsBatchOperationActive}  />
       </ToolbarContainerDiv>
       <ListContainerDiv>
         <List isBatchOperationActive={isBatchOperationActive} />

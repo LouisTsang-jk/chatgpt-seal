@@ -7,6 +7,7 @@ import styled from "styled-components"
 import { DataProvider } from "./DataContext"
 import Editor from "./views/Editor"
 import { SnackbarProvider } from "./common/SnackbarContext/SnackbarProvider"
+import About from "./views/About"
 
 const router = createHashRouter([
   {
@@ -22,12 +23,8 @@ const router = createHashRouter([
     element: <Editor />
   },
   {
-    path: "setting",
-    element: <p>Setting</p>
-  },
-  {
     path: "about",
-    element: <p>About</p>
+    element: <About />
   }
 ])
 
