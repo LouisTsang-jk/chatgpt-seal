@@ -1,13 +1,16 @@
 import { useContext, useEffect } from "react"
 import styled from "styled-components"
 import {
+  Box,
   Checkbox,
   ListItemButton,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Typography
 } from "@mui/material"
 import { DataContext, StorageKey } from "@/DataContext"
 import useStorage from "@/hooks/useStorage"
+import EmptyIcon from "@mui/icons-material/Inbox"
 
 interface ListProps {
   isBatchOperationActive: boolean
@@ -52,7 +55,7 @@ export default function List(props: ListProps) {
           dense
           component="li"
           key={templateIndex}
-          sx={{ padding: '0 8px' }}
+          sx={{ padding: "0 8px" }}
           onClick={() => handleToggle(template)}
         >
           {isBatchOperationActive && (
@@ -80,6 +83,18 @@ export default function List(props: ListProps) {
           />
         </ListItemButton>
       ))}
+      {templateList.length === 0 && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+        >
+          <EmptyIcon style={{ fontSize: 60 }} />
+          <Typography variant="h6">Data is empty</Typography>
+        </Box>
+      )}
     </>
   )
 }

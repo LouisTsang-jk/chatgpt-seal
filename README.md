@@ -26,10 +26,10 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 
 ## Todo
 
-- [ ] 空列表没展示
-- [ ] 补充 README.md
+- [X] 空列表没展示
+- [X] 补充 README.md
 - [ ] 修改触发列表方式
 - [X] 多行文本不会触发 textarea 计算高度的问题
-- [ ] 关于页面没有返回按钮
+- [X] 关于页面没有返回按钮
 - [ ] 点击template替换到textarea
 - [ ] Github Actions

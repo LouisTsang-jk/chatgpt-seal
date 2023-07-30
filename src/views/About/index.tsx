@@ -1,13 +1,19 @@
-import { Box, Container, Link, Typography } from "@mui/material"
-
+import { Box, Container, IconButton, Link, Typography } from "@mui/material"
+import { Link as RouterLink } from "react-router-dom"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import EmailIcon from "@mui/icons-material/Email"
 import HelpIcon from "@mui/icons-material/Help"
 import FeedbackIcon from "@mui/icons-material/Feedback"
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 
 export default function About() {
   return (
-    <Container sx={{ overflowY: "auto", maxHeight: "100vh" }}>
+    <Container sx={{ overflowY: "auto", maxHeight: "100vh", padding: '8px 16px' }}>
+      <RouterLink to="/">
+        <IconButton color="secondary" aria-label="back" sx={{padding: '0 0 16px 0'}}>
+          <KeyboardBackspaceIcon />
+        </IconButton>
+      </RouterLink>
       <Typography variant="h4" gutterBottom>
         关于
       </Typography>
