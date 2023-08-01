@@ -131,7 +131,9 @@ function styleInitial() {
       position: absolute;
       transform: translateY(-100%);
       top: -8px;
-      background: rgba(200,200,200,0.4);
+      background: rgba(255,255,255,0.6);
+      box-shadow: 0 0 transparent, 0 0 transparent, 0 0 15px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.1);
       width: 100%;
       left: 0;
       border-radius: 12px;
@@ -154,7 +156,7 @@ function styleInitial() {
       content: "";
       width: 100%;
       height: 1px;
-      background: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.1);
       display: inline-block;
       bottom: 0;
       position: absolute;
@@ -165,7 +167,7 @@ function styleInitial() {
       opacity: 0;
     }
     #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
-      background-color: rgba(236,236,241, 1);
+      background-color: rgba(255,255,255, 1);
     }
   `
   document.head.appendChild(style)

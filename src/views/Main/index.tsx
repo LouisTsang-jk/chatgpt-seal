@@ -11,7 +11,6 @@ const ToolbarContainerDiv = styled.div`
 
 const ListContainerDiv = styled.div`
   height: 100%;
-  max-height: 500px;
   overflow: auto;
 `
 

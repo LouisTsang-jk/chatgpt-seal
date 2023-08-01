@@ -3,7 +3,7 @@
 <img src="./logo.png" alt="ChatGPT_Seal" width="160" height="160">
 
 ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。
-
+<img src="./readme_1.png" alt="ChatGPT_Seal" width="400">
 ## 功能
 
 - 保存你常用的问题或者输入，以便一键发送到 ChatGPT。
@@ -21,14 +21,14 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 ## 如何使用
 
 1. 打开 ChatGPT 页面。
-2. 点击浏览器右上角的 ChatGPT_Seal 插件图标。
-3. 创建模板，然后在 ChatGPT 的文本框中输入"/"唤起模板列表，点击模板进行快速输入。
+2. 点击浏览器右上角的 ChatGPT_Seal 插件图标创建模板。
+3. 然后在ChatGPT中会展示唤起的按钮🔘
 
 ## Todo
 
 - [X] 空列表没展示
 - [X] 补充 README.md
-- [x] 修改触发列表方式
+- [X] 修改触发列表方式
 - [X] 多行文本不会触发 textarea 计算高度的问题
 - [X] 关于页面没有返回按钮
 - [ ] 点击template替换到textarea
