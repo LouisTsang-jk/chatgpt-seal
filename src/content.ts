@@ -1,36 +1,75 @@
 const STORAGE_KEY = 'templates'
 
-suggestionInitial()
+window.onload = function () {
+  suggestionInitial()
+}
 
 function suggestionInitial() {
   const promptTextarea: HTMLTextAreaElement | null = document.querySelector("#prompt-textarea")
 
   if (!promptTextarea || !promptTextarea.parentElement) return
 
-  let suggestionContainer = document.createElement('div')
+  const suggestionContainer = document.createElement('div')
   suggestionContainer.id = 'suggestion-container'
   promptTextarea.parentElement.appendChild(suggestionContainer)
 
-  let currentSuggestionElement: HTMLElement | null = null
+  const suggestionSwitch = document.createElement('div')
+  suggestionSwitch.id = 'suggestion-switch'
+  suggestionSwitch.appendChild(createRingSVG())
+  // suggestionSwitch.innerText = 'Insert'
+  suggestionSwitch.onclick = (e: Event) => {
+    e.preventDefault()
+    const container: HTMLDivElement | null = document.querySelector('#suggestion-container')
+    if (!container) return
+    if (container.style.visibility === 'visible') {
+      hiddenSuggestion()
+    } else {
+      refreshSuggestion()
+    }
+  }
+  promptTextarea.parentElement.insertBefore(suggestionSwitch, promptTextarea)
 
-  promptTextarea.addEventListener('input', (event: Event) => {
-    const target = event.target as HTMLTextAreaElement;
-    if (target.value.slice(-1) === '/') {
-      showSuggestion(promptTextarea, suggestionContainer).then((suggestionElement) => {
-        currentSuggestionElement = suggestionElement
-        suggestionContainer.appendChild(suggestionElement)
-      })
-    }
-    if (target.value.slice(-1) !== '/' && currentSuggestionElement && suggestionContainer.contains(currentSuggestionElement)) {
-      suggestionContainer.removeChild(currentSuggestionElement)
-      currentSuggestionElement = null
-    }
-  });
+  // promptTextarea.addEventListener('input', (event: Event) => {
+  //   const target = event.target as HTMLTextAreaElement;
+  //   if (target.value.slice(-1) === '/') {
+  //     showSuggestion(promptTextarea, suggestionContainer).then((suggestionElement) => {
+  //       currentSuggestionElement = suggestionElement
+  //       suggestionContainer.appendChild(suggestionElement)
+  //     })
+  //   }
+  //   if (target.value.slice(-1) !== '/' && currentSuggestionElement && suggestionContainer.contains(currentSuggestionElement)) {
+  //     suggestionContainer.removeChild(currentSuggestionElement)
+  //     currentSuggestionElement = null
+  //   }
+  // });
 
   styleInitial()
 }
 
-function showSuggestion(target: HTMLTextAreaElement, container: HTMLElement) {
+function hiddenSuggestion() {
+  const container: HTMLDivElement | null = document.querySelector('#suggestion-container')
+  if (container) {
+    container.style.visibility = 'hidden'
+  }
+}
+
+function removeChildNode(root: HTMLDivElement) {
+  while (root.firstChild) {
+    root.removeChild(root.firstChild)
+  }
+}
+
+function refreshSuggestion() {
+  // TODO显示suggestion-container
+  const container: HTMLDivElement | null = document.querySelector('#suggestion-container')
+  if (!container) return
+  removeChildNode(container)
+  container.style.visibility = 'visible'
+  // TODO 重新渲染suggestion
+  loadSuggestion(container)
+}
+
+function loadSuggestion(container: HTMLElement) {
   return new Promise<HTMLElement>((resolve) => {
     chrome.storage.local.get([STORAGE_KEY], (data) => {
       const list = (data[STORAGE_KEY] || []) as Template[]
@@ -48,15 +87,8 @@ function showSuggestion(target: HTMLTextAreaElement, container: HTMLElement) {
         if (!liTarget) return
         const index = liTarget.getAttribute('index')
         if (index === null || typeof (+index) !== 'number') return
-        target.value = target.value.replace(/\/$/gm, list[+index].body)
-        const event = new Event('input', {
-          'bubbles': true,
-          'cancelable': true
-        });
-        target.dispatchEvent(event);
-        if (container.contains(ul)) {
-          container.removeChild(ul)
-        }
+        updateTextareaValue(list[+index].body)
+        hiddenSuggestion()
       })
       container.appendChild(ul)
       resolve(ul)
@@ -64,12 +96,37 @@ function showSuggestion(target: HTMLTextAreaElement, container: HTMLElement) {
   })
 }
 
+function updateTextareaValue(value: string) {
+  const target: HTMLTextAreaElement | null = document.querySelector("#prompt-textarea")
+  if (!target) return
+  if (target.selectionStart || +target.selectionStart === 0) {
+    const startPos = target.selectionStart;
+    const endPos = target.selectionEnd;
+    target.value = target.value.substring(0, startPos) + value + target.value.substring(endPos, target.value.length);
+  } else {
+    target.value += target;
+  }
+  const event = new Event('input', {
+    'bubbles': true,
+    'cancelable': true
+  });
+  target.dispatchEvent(event);
+}
+
 function styleInitial() {
   const styleId = 'prompt-suggestion-style'
-  if (document.getElementById(styleId)) return
+  if (document.querySelector(styleId)) return
   const style = document.createElement('style')
   style.id = styleId
   style.innerHTML = `
+    #prompt-textarea {
+      padding-left: 40px;
+    }
+    #suggestion-switch {
+      position: absolute;
+      left: 16px;
+      cursor: pointer;
+    }
     #suggestion-container {
       position: absolute;
       transform: translateY(-100%);
@@ -113,3 +170,22 @@ function styleInitial() {
   `
   document.head.appendChild(style)
 }
+
+function createRingSVG() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("height", "24");
+  svg.setAttribute("width", "24");
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "12");
+  circle.setAttribute("cy", "12");
+  circle.setAttribute("r", "10");
+  circle.setAttribute("stroke", "grey");
+  circle.setAttribute("stroke-width", "4");
+  circle.setAttribute("fill", "none");
+  svg.appendChild(circle);
+  return svg
+}
+
+// <svg height="24" width="24">
+//     <circle cx="12" cy="12" r="10" stroke="grey" stroke-width="4" fill="none"></circle>
+// </svg>

@@ -91,8 +91,8 @@ export default function List(props: ListProps) {
           justifyContent="center"
           height="100%"
         >
-          <EmptyIcon style={{ fontSize: 60 }} />
-          <Typography variant="h6">Data is empty</Typography>
+          <EmptyIcon color="secondary" style={{ fontSize: 60 }} />
+          <Typography color="secondary" variant="h6">Data is empty</Typography>
         </Box>
       )}
     </>

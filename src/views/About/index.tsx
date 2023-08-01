@@ -8,12 +8,17 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 
 export default function About() {
   return (
-    <Container sx={{ overflowY: "auto", maxHeight: "100vh", padding: '8px 16px' }}>
-      <RouterLink to="/">
-        <IconButton color="secondary" aria-label="back" sx={{padding: '0 0 16px 0'}}>
-          <KeyboardBackspaceIcon />
-        </IconButton>
-      </RouterLink>
+    <Container
+      sx={{ overflowY: "auto", maxHeight: "100vh" }}
+      style={{ padding: 0 }}
+    >
+      <Box display={"flex"}>
+        <RouterLink to="/">
+          <IconButton aria-label="back" sx={{ margin: "0 0 8px 0" }}>
+            <KeyboardBackspaceIcon />
+          </IconButton>
+        </RouterLink>
+      </Box>
       <Typography variant="h4" gutterBottom>
         关于
       </Typography>

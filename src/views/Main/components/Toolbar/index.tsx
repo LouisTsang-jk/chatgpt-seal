@@ -58,9 +58,6 @@ const ActionBtnGroupDiv = styled.div`
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  button {
-    color: #333;
-  }
   button + button {
     margin: 0 0 0 4px;
   }
@@ -117,7 +114,7 @@ export default function Toolbar(props: ToolbarProps) {
         <ActionBtnGroupDiv>
           <Link to="/create">
             <Tooltip title="Create a new Template">
-              <IconButton color="secondary" aria-label="Create a new template">
+              <IconButton aria-label="Create a new template">
                 <AddIcon />
               </IconButton>
             </Tooltip>
@@ -126,7 +123,6 @@ export default function Toolbar(props: ToolbarProps) {
             <ToggleButton
               value="check"
               aria-label="Batch operate"
-              color="secondary"
               selected={isBatchOperationActive}
               sx={{
                 border: 0,
@@ -136,7 +132,7 @@ export default function Toolbar(props: ToolbarProps) {
               }}
               onChange={handleBatchChange}
             >
-              <ChecklistIcon />
+              <ChecklistIcon  />
             </ToggleButton>
           </Tooltip>
           {isBatchOperationActive && (
@@ -149,7 +145,6 @@ export default function Toolbar(props: ToolbarProps) {
             >
               <Box display="inline-flex">
                 <IconButton
-                  color="secondary"
                   disabled={disabledBatchAction}
                   onClick={() => deleteDialogVisibleChange(true)}
                   aria-label="Delete"
@@ -166,7 +161,7 @@ export default function Toolbar(props: ToolbarProps) {
           )}
           <Link to="/about">
             <Tooltip title="Info">
-              <IconButton color="secondary" aria-label="Info">
+              <IconButton  aria-label="Info">
                 <HelpOutlineIcon />
               </IconButton>
             </Tooltip>
