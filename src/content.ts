@@ -4,7 +4,7 @@ window.onload = function () {
   suggestionInitial()
 }
 
-function suggestionInitial() {
+function suggestionInitial(isRecursion: boolean = false) {
   const promptTextarea: HTMLTextAreaElement | null = document.querySelector("#prompt-textarea")
 
   if (!promptTextarea || !promptTextarea.parentElement) return
@@ -12,11 +12,21 @@ function suggestionInitial() {
   const suggestionContainer = document.createElement('div')
   suggestionContainer.id = 'suggestion-container'
   promptTextarea.parentElement.appendChild(suggestionContainer)
+  hiddenSuggestion()
+  const observer = new MutationObserver(() => {
+    const target = document.querySelector('#suggestion-switch')
+    if (!target) {
+      !isRecursion && suggestionInitial(true)
+    }
+  })
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  })
 
   const suggestionSwitch = document.createElement('div')
   suggestionSwitch.id = 'suggestion-switch'
-  suggestionSwitch.appendChild(createRingSVG())
-  // suggestionSwitch.innerText = 'Insert'
+  suggestionSwitch.appendChild(createRingDiv())
   suggestionSwitch.onclick = (e: Event) => {
     e.preventDefault()
     const container: HTMLDivElement | null = document.querySelector('#suggestion-container')
@@ -28,21 +38,6 @@ function suggestionInitial() {
     }
   }
   promptTextarea.parentElement.insertBefore(suggestionSwitch, promptTextarea)
-
-  // promptTextarea.addEventListener('input', (event: Event) => {
-  //   const target = event.target as HTMLTextAreaElement;
-  //   if (target.value.slice(-1) === '/') {
-  //     showSuggestion(promptTextarea, suggestionContainer).then((suggestionElement) => {
-  //       currentSuggestionElement = suggestionElement
-  //       suggestionContainer.appendChild(suggestionElement)
-  //     })
-  //   }
-  //   if (target.value.slice(-1) !== '/' && currentSuggestionElement && suggestionContainer.contains(currentSuggestionElement)) {
-  //     suggestionContainer.removeChild(currentSuggestionElement)
-  //     currentSuggestionElement = null
-  //   }
-  // });
-
   styleInitial()
 }
 
@@ -169,25 +164,53 @@ function styleInitial() {
     #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
       background-color: rgba(255,255,255, 1);
     }
+    #prompt-template-toggle {
+      --animation-color: rgba(128, 128, 128, 0.5);
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      border: 2px solid grey;
+      animation: breathing 2s infinite;
+      transition: 300ms;
+    }
+    #prompt-template-toggle:hover {
+      border-color: rgba(171, 104, 255, 0.8);
+      --animation-color: rgba(171, 104, 255, 0.8);
+    }
+    @keyframes breathing {
+      0% { box-shadow: 0 0 0 0 var(--animation-color); }
+      100% { box-shadow: 0 0 0 14px rgba(128, 128, 128, 0); }
+    }
+    @media (prefers-color-scheme: dark) {
+      #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
+        background-color: rgba(255,255,255, 0.1);
+      }
+      #prompt-suggestion.chatgpt-template-prompt-suggestion li::after {
+        background: rgba(255,255,255,0.1);
+      }
+      #suggestion-container {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      #prompt-suggestion.chatgpt-template-prompt-suggestion li:hover  {
+        background-color: rgba(0,0,0, 0.2);
+      }
+      #prompt-suggestion.chatgpt-template-prompt-suggestion li::after {
+        background: rgba(0,0,0,0.1);
+      }
+      #suggestion-container {
+        background: rgba(255,255,255,0.6);
+        border: 1px solid rgba(0,0,0,0.1);
+      }
+    }
   `
   document.head.appendChild(style)
 }
 
-function createRingSVG() {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("height", "24");
-  svg.setAttribute("width", "24");
-  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  circle.setAttribute("cx", "12");
-  circle.setAttribute("cy", "12");
-  circle.setAttribute("r", "10");
-  circle.setAttribute("stroke", "grey");
-  circle.setAttribute("stroke-width", "4");
-  circle.setAttribute("fill", "none");
-  svg.appendChild(circle);
-  return svg
+function createRingDiv() {
+  const div = document.createElement("div");
+  div.id = "prompt-template-toggle"
+  return div;
 }
-
-// <svg height="24" width="24">
-//     <circle cx="12" cy="12" r="10" stroke="grey" stroke-width="4" fill="none"></circle>
-// </svg>
