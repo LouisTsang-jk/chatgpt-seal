@@ -1,0 +1,17 @@
+[
+  {
+    "category": "code",
+    "title": "Generate Git Commit Message",
+    "body": "Please generate a Git commit message according to the Conventional Commits standard based on the following content: <Your Description>"
+  },
+  {
+    "category": "code",
+    "title": "Code Analysis and Optimization",
+    "body": "Please read the following code and analyze it:\n```\n```\n- What is the main function of this code?\n- Suggest improvements for this code\n- Point out potential problems in the code\n- Provide an optimized version of the code"
+  },
+  {
+    "category": "common",
+    "title": "Translation Task",
+    "body": "Please translate the following content into English: `<your text>`\n- Please make sure the translation is natural and fluent\n- For proper nouns, do not translate, keep the original output\n- Try to conform to the everyday language habits of the target language"
+  }
+]

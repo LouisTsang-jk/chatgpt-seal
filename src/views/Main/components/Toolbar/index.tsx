@@ -19,7 +19,6 @@ import Confirm from "../Confirm"
 import useStorage from "@/hooks/useStorage"
 import { useSnackbar } from "@/common/SnackbarContext"
 
-
 interface ToolbarProps {
   isBatchOperationActive: boolean
   handleBatchChange: (nextValue?: any) => void
@@ -37,7 +36,7 @@ const SearchContainerDiv = styled.div`
   font-size: 12px;
   align-items: center;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 0 8px;
   margin: 0 8px;
   height: 24px;
@@ -55,7 +54,6 @@ const SearchInputIcon = styled(SearchIcon)`
 `
 
 const ActionBtnGroupDiv = styled.div`
-  margin-bottom: 8px;
   display: flex;
   align-items: center;
   button + button {
@@ -73,7 +71,7 @@ export default function Toolbar(props: ToolbarProps) {
   const [, setTemplateStorage] = useStorage<Template[]>(StorageKey)
 
   const { openSnackbar } = useSnackbar()
-  
+
   useEffect(() => {
     for (const template of templateList) {
       if (template.checked) {
@@ -97,7 +95,7 @@ export default function Toolbar(props: ToolbarProps) {
   }
 
   return (
-    <>
+    <Box width="100%" display="flex" justifyContent="space-between" alignItems="center">
       <ToolbarTitleDiv>Template List</ToolbarTitleDiv>
       <ToolbarActionDiv>
         {false && (
@@ -132,7 +130,7 @@ export default function Toolbar(props: ToolbarProps) {
               }}
               onChange={handleBatchChange}
             >
-              <ChecklistIcon  />
+              <ChecklistIcon />
             </ToggleButton>
           </Tooltip>
           {isBatchOperationActive && (
@@ -161,13 +159,13 @@ export default function Toolbar(props: ToolbarProps) {
           )}
           <Link to="/about">
             <Tooltip title="Info">
-              <IconButton  aria-label="Info">
+              <IconButton aria-label="Info">
                 <HelpOutlineIcon />
               </IconButton>
             </Tooltip>
           </Link>
         </ActionBtnGroupDiv>
       </ToolbarActionDiv>
-    </>
+    </Box>
   )
 }

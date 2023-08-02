@@ -41,9 +41,6 @@ const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
-  /* border-radius: 12px; */
-  /* border: 1px solid pink; */
-  /* padding: 8px; */
 `
 
 const violetDark = "rgb(171, 104, 255)"

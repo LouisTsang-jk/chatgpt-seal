@@ -5,7 +5,7 @@
 ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。    
   
      
-<img src="./snapshot/snapshot-3.png" alt="ChatGPT_Seal" width="400">
+<img src="./snapshot/snapshot-3.png" alt="ChatGPT_Seal">
 ## 功能
 
 - 保存你常用的问题或者输入，以便一键发送到 ChatGPT。
@@ -39,3 +39,9 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 - [ ] Github Actions
 - [X] Dark Styles
 - [ ] Changelog
+- [ ] 点击suggestion-container外的区域隐藏
+- [ ] import/export 功能
+- [ ] 空template点击switch需要提示用户
+- [ ] snackbar没有兼容暗色主题
+- [ ] 支持当前textarea复制到popup中
+ 
