@@ -2,7 +2,9 @@
 
 <img src="./logo.png" alt="ChatGPT_Seal" width="160" height="160">
 
-ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。
+ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。    
+  
+     
 <img src="./snapshot/snapshot-3.png" alt="ChatGPT_Seal" width="400">
 ## 功能
 
