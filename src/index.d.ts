@@ -4,3 +4,4 @@ declare interface Template {
   body: string
   checked?: boolean
 }
+

@@ -40,7 +40,7 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 4. 点击展开模板列表，点击模板即可将模板内容填充
 
 ## 💡 常用模板
-另外在[这里](https://github.com/LouisTsang-jk/chatgpt-seal/blob/main/conf/prompts_zh.json)提供了常用的模板。
+另外在[这里]((./src/conf/prompts_zh.json))提供了常用的模板。
 
 ## 🤝 贡献指南
 

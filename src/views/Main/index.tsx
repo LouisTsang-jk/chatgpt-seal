@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import Toolbar from "./components/Toolbar"
 import List from "./components/List"
-import { useToggle } from "react-use"
 
 const ToolbarContainerDiv = styled.div`
   display: flex;
@@ -15,19 +14,13 @@ const ListContainerDiv = styled.div`
 `
 
 export default function Main() {
-  const [isBatchOperationActive, toggleIsBatchOperationActive] =
-    useToggle(false)
-
   return (
     <>
       <ToolbarContainerDiv>
-        <Toolbar
-          isBatchOperationActive={isBatchOperationActive}
-          handleBatchChange={toggleIsBatchOperationActive}
-        />
+        <Toolbar />
       </ToolbarContainerDiv>
       <ListContainerDiv>
-        <List isBatchOperationActive={isBatchOperationActive} />
+        <List  />
       </ListContainerDiv>
     </>
   )

@@ -3,6 +3,7 @@ import {
   IconButton,
   InputBase,
   ToggleButton,
+  ToggleButtonGroup,
   Tooltip
 } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
@@ -10,22 +11,18 @@ import AddIcon from "@mui/icons-material/Add"
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
 import ChecklistIcon from "@mui/icons-material/Checklist"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
-// import WhatshotIcon from "@mui/icons-material/Whatshot"
-// import GetAppIcon from "@mui/icons-material/GetApp"
-// import PublishIcon from "@mui/icons-material/Publish"
+import WhatshotIcon from "@mui/icons-material/Whatshot"
+import GetAppIcon from "@mui/icons-material/GetApp"
+import PublishIcon from "@mui/icons-material/Publish"
+import ArticleIcon from '@mui/icons-material/Article';
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { DataContext, StorageKey } from "@/DataContext"
+import { DataContext, ListType, StorageKey } from "@/DataContext"
 import { useContext, useEffect } from "react"
 import { useToggle } from "react-use"
 import Confirm from "../Confirm"
 import useStorage from "@/hooks/useStorage"
 import { useSnackbar } from "@/common/SnackbarContext"
-
-interface ToolbarProps {
-  isBatchOperationActive: boolean
-  handleBatchChange: (nextValue?: any) => void
-}
 
 const ToolbarTitleDiv = styled.div``
 
@@ -64,9 +61,10 @@ const ActionBtnGroupDiv = styled.div`
   }
 `
 
-export default function Toolbar(props: ToolbarProps) {
-  const { isBatchOperationActive, handleBatchChange } = props
+export default function Toolbar() {
   const { templateList, setTemplateList } = useContext(DataContext)
+  const { listType, setListType } = useContext(DataContext)
+  const { isBatchOperationActive, setIsBatchOperationActive } = useContext(DataContext)
 
   const [disabledBatchAction, disabledBatchActionChange] = useToggle(true)
   const [deleteDialogVisible, deleteDialogVisibleChange] = useToggle(false)
@@ -94,9 +92,19 @@ export default function Toolbar(props: ToolbarProps) {
     setTemplateList([...updateTemplateList])
     openSnackbar("Delete Template Success")
     deleteDialogVisibleChange(false)
-    handleBatchChange(false)
+    setIsBatchOperationActive(false)
   }
 
+  const onListTypeChange = (evt: React.MouseEvent<HTMLElement>, listType: ListType) => {
+    setListType(listType)
+  }
+  
+  const control = {
+    value: listType,
+    onChange: onListTypeChange,
+    exclusive: true,
+  };
+  
   return (
     <Box
       width="100%"
@@ -104,7 +112,16 @@ export default function Toolbar(props: ToolbarProps) {
       justifyContent="space-between"
       alignItems="center"
     >
-      <ToolbarTitleDiv>Template List</ToolbarTitleDiv>
+      <ToolbarTitleDiv>
+        <ToggleButtonGroup size="small" {...control}>
+          <ToggleButton value="regular" key="regular">
+            <ArticleIcon />
+          </ToggleButton>
+          <ToggleButton value="hot" key="hot">
+            <WhatshotIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </ToolbarTitleDiv>
       <ToolbarActionDiv>
         {false && (
           <>
@@ -134,9 +151,9 @@ export default function Toolbar(props: ToolbarProps) {
                 border: 0,
                 borderRadius: "50%",
                 padding: "8px",
-                marginLeft: "4px"
+                margin: "0 4px"
               }}
-              onChange={handleBatchChange}
+              onChange={() => setIsBatchOperationActive(!isBatchOperationActive)}
             >
               <ChecklistIcon />
             </ToggleButton>

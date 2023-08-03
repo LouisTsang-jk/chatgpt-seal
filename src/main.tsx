@@ -87,7 +87,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <DataProvider>
           <LayoutDiv>
-            <Card sx={{ overflowY: "auto" }}>
+            <Card sx={{ overflowY: "auto", borderRadius: 0 }}>
               <CardContent>
                 <SnackbarProvider>
                   <RouterProvider router={router} />

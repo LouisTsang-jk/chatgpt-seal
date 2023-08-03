@@ -8,13 +8,10 @@ import {
   ListItemText,
   Typography
 } from "@mui/material"
-import { DataContext, StorageKey } from "@/DataContext"
+import { DataContext, ListType, StorageKey } from "@/DataContext"
 import useStorage from "@/hooks/useStorage"
 import EmptyIcon from "@mui/icons-material/Inbox"
-
-interface ListProps {
-  isBatchOperationActive: boolean
-}
+import HotPromptList from "@/conf/prompts_zh.json"
 
 const TemplateDescriptionSpan = styled.span`
   color: #ccc;
@@ -31,16 +28,24 @@ const TruncateSpan = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
-export default function List(props: ListProps) {
-  const { isBatchOperationActive } = props
-
+export default function List() {
   const { templateList, setTemplateList } = useContext(DataContext)
+  const { isBatchOperationActive } = useContext(DataContext)
+  const { listType } = useContext(DataContext)
 
   const [templateStorage] = useStorage<Template[]>(StorageKey)
 
   useEffect(() => {
-    setTemplateList(templateStorage || [])
-  }, [templateStorage])
+    if (listType === ListType.regular) {
+      setTemplateList(templateStorage || [])
+    }
+    if (listType === ListType.hot) {
+      setTemplateList((HotPromptList.map((prompt, promptIndex) => ({
+        ...prompt,
+        id: `${promptIndex}`
+      })) as Template[]) || [])
+    }
+  }, [templateStorage, listType])
 
   const handleToggle = (template: Template) => {
     if (!isBatchOperationActive) return
@@ -49,7 +54,7 @@ export default function List(props: ListProps) {
   }
 
   return (
-    <>
+    <Box sx={{marginTop: '8px'}}>
       {templateList.map((template, templateIndex: number) => (
         <ListItemButton
           dense
@@ -95,6 +100,6 @@ export default function List(props: ListProps) {
           <Typography color="secondary" variant="h6">Data is empty</Typography>
         </Box>
       )}
-    </>
+    </Box>
   )
 }

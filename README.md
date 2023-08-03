@@ -41,7 +41,7 @@ ChatGPT_Seal is a Chrome extension designed for ChatGPT, helping users quickly i
 4. Click to expand the template list, and click on the template to fill in the template content.
 
 ## 💡 Common Templates
-Additionally, common templates are provided [here](https://github.com/LouisTsang-jk/chatgpt-seal/blob/main/conf/prompts.json).
+Additionally, common templates are provided [here](./src/conf/prompts.json).
 
 ## 🤝 Contribution Guide
 
