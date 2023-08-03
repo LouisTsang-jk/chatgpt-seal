@@ -1,47 +1,68 @@
-# ChatGPT_Seal
+# 🌊 ChatGPT_Seal
+[![GitHub release](https://img.shields.io/github/tag/LouisTsang-jk/chatgpt-seal.svg?label=release)](https://github.com/LouisTsang-jk/chatgpt-seal/releases)
 
-<img src="./logo.png" alt="ChatGPT_Seal" width="160" height="160">
+[README](README.md) | [中文文档](README_zh.md)
 
-ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。    
-  
-     
-<img src="./snapshot/snapshot-3.png" alt="ChatGPT_Seal">
-## 功能
+<p align="center">
+    <img src="./logo.png" alt="ChatGPT_Seal" width="120" height="120">
+</p>
 
-- 保存你常用的问题或者输入，以便一键发送到 ChatGPT。
-- 自定义模板，适配各种场景下的需求。
-- 用户友好的界面，快速上手使用。
+ChatGPT_Seal is a Chrome extension designed for ChatGPT, helping users quickly input preset prompts on the ChatGPT page. It avoids the tedious operation of repeatedly entering the same questions, making your communication more convenient and efficient.    
 
-## 如何安装
+<p align="center">
+    <img src="./snapshot/snapshot-3.png" alt="ChatGPT_Seal">
+</p>
 
-1. 从 GitHub 上下载源代码文件。
-2. 打开 Chrome 浏览器，进入扩展程序界面(`chrome://extensions/`)。
-3. 打开开发者模式。
-4. 点击"加载已解压的扩展程序"，选择你下载的源代码文件目录。
-5. 此时，ChatGPT_Seal 已经成功安装到你的 Chrome 浏览器中。
+## 🚀 Features
 
-## 如何使用
+- Save your frequently used questions or inputs for one-click sending to ChatGPT.
+- Customize templates to adapt to various scenario needs.
+- User-friendly interface for quick and easy use.
 
-1. 打开 ChatGPT 页面。
-2. 点击浏览器右上角的 ChatGPT_Seal 插件图标创建模板。
-<img src="./snapshot/snapshot-2.png" alt="ChatGPT_Seal" width="400">
-3. 然后在ChatGPT中会展示唤起的按钮🔘
-<img src="./snapshot/snapshot-1.png" alt="ChatGPT_Seal" width="400">
+## 📥 How to Install
 
-## Todo
+1. Download the installation file (`ChatGPT_Seal.zip`) from the [Download Page](https://github.com/LouisTsang-jk/chatgpt-seal/releases).
+2. Open the Chrome browser and go to the extension interface (`chrome://extensions/`).
+3. Turn on developer mode.
+4. Click "Load unpacked extension" and select the directory of the unpacked installation file you downloaded.
+5. At this point, ChatGPT_Seal has been successfully installed in your Chrome browser, and you can check it by clicking the little seal icon in the upper right corner.
 
-- [X] 空列表没展示
-- [X] 补充 README.md
-- [X] 修改触发列表方式
-- [X] 多行文本不会触发 textarea 计算高度的问题
-- [X] 关于页面没有返回按钮
-- [ ] 点击template替换到textarea
-- [ ] Github Actions
-- [X] Dark Styles
-- [ ] Changelog
-- [ ] 点击suggestion-container外的区域隐藏
-- [ ] import/export 功能
-- [ ] 空template点击switch需要提示用户
-- [ ] snackbar没有兼容暗色主题
-- [ ] 支持当前textarea复制到popup中
- 
+## 🛠️ How to Use
+
+1. Open the ChatGPT page.
+2. Click the ChatGPT_Seal plugin icon (the little seal) in the upper right corner of the browser to create a template.
+<p align="center">
+    <img src="./snapshot/snapshot-2.png" alt="ChatGPT_Seal" width="400">
+</p>
+3. Then a button will be displayed near the input box in ChatGPT.
+<p align="center">
+    <img src="./snapshot/snapshot-1.png" alt="ChatGPT_Seal" width="400">
+</p>
+4. Click to expand the template list, and click on the template to fill in the template content.
+
+## 💡 Common Templates
+Additionally, common templates are provided [here](https://github.com/LouisTsang-jk/chatgpt-seal/blob/main/conf/prompts_en.json).
+
+## 🤝 Contribution Guide
+
+We welcome all contributions. You can participate in many ways:
+
+1. Report bugs or submit feature requests by creating new issues on GitHub.
+2. Contribute to the code base by creating a pull request.
+
+For more information, please refer to the CONTRIBUTING.md (to be created).
+
+## 💬 Discussions
+
+We use GitHub Discussions as a place to discuss bugs, new features, and ways to improve the project. Feel free to join these conversations and we look forward to hearing your thoughts.
+
+## 🐞 Issue Guide
+
+When creating a new issue, please follow these steps:
+
+1. Use a clear and descriptive title for the issue.
+2. Describe the exact steps to reproduce the problem in as many details as possible.
+3. Describe the behavior you observed after following the steps and explain why this is a problem.
+4. If applicable, include screenshots and animated GIFs demonstrating the problem.
+
+For more information, please refer to the ISSUE_TEMPLATE.md (to be created).

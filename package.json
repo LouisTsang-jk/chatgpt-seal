@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && cp manifest.json dist/manifest.json && cp logo.png dist/logo.png",
+    "build:zip": "npm run build && cd dist && zip -r ../ChatGPT_Seal.zip .",
     "watch": "vite build --watch",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
