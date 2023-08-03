@@ -9,7 +9,7 @@
   "icons": {
     "128": "logo.png"
   },
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["storage"],
   "commands": {
     "_execute_action": {
       "suggested_key": {

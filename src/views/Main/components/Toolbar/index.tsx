@@ -10,6 +10,9 @@ import AddIcon from "@mui/icons-material/Add"
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
 import ChecklistIcon from "@mui/icons-material/Checklist"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
+// import WhatshotIcon from "@mui/icons-material/Whatshot"
+// import GetAppIcon from "@mui/icons-material/GetApp"
+// import PublishIcon from "@mui/icons-material/Publish"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { DataContext, StorageKey } from "@/DataContext"
@@ -95,7 +98,12 @@ export default function Toolbar(props: ToolbarProps) {
   }
 
   return (
-    <Box width="100%" display="flex" justifyContent="space-between" alignItems="center">
+    <Box
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <ToolbarTitleDiv>Template List</ToolbarTitleDiv>
       <ToolbarActionDiv>
         {false && (

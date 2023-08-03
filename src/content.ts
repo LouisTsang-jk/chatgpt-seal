@@ -114,12 +114,10 @@ function styleInitial() {
   const style = document.createElement('style')
   style.id = styleId
   style.innerHTML = `
-    #prompt-textarea {
-      padding-left: 40px;
-    }
     #suggestion-switch {
       position: absolute;
       left: 16px;
+      top: -40px;
       cursor: pointer;
     }
     #suggestion-container {
@@ -129,8 +127,8 @@ function styleInitial() {
       background: rgba(255,255,255,0.6);
       box-shadow: 0 0 transparent, 0 0 transparent, 0 0 15px rgba(0,0,0,0.1);
       border: 1px solid rgba(0,0,0,0.1);
-      width: 100%;
-      left: 0;
+      width: calc(100% - 52px);
+      right: 0;
       border-radius: 12px;
       backdrop-filter: blur(10px);
     }
