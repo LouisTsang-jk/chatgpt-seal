@@ -48,9 +48,24 @@ export default function List() {
   }, [templateStorage, listType])
 
   const handleToggle = (template: Template) => {
-    if (!isBatchOperationActive) return
+    if (!isBatchOperationActive) {
+      fillTextarea(template)
+      return
+    }
     template.checked = !template.checked
     setTemplateList([...templateList])
+  }
+
+  const fillTextarea = (template: Template) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const tabId = tabs[0].id as number
+      chrome.tabs.sendMessage(
+        tabId,
+        { type: "fill", data: {
+          template: template.body
+        }}
+      )
+    })
   }
 
   return (
@@ -64,7 +79,7 @@ export default function List() {
           onClick={() => handleToggle(template)}
         >
           {isBatchOperationActive && (
-            <ListItemIcon>
+            <ListItemIcon sx={{marginLeft: '-8px', minWidth: 'auto'}}>
               <Checkbox
                 size="small"
                 checked={template.checked || false}

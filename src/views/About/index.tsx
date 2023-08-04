@@ -19,9 +19,6 @@ export default function About() {
           </IconButton>
         </RouterLink>
       </Box>
-      <Typography variant="h4" gutterBottom>
-        关于
-      </Typography>
 
       <Box my={1}>
         <Typography variant="h6">Version</Typography>

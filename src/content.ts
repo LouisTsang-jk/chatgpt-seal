@@ -1,5 +1,13 @@
 const STORAGE_KEY = 'templates'
 
+chrome.runtime.onMessage.addListener(
+  function (request) {
+    if (request.type == "fill") {
+      updateTextareaValue(request.data.template)
+    }
+  }
+);
+
 window.onload = function () {
   suggestionInitial()
 }
@@ -114,11 +122,20 @@ function styleInitial() {
   const style = document.createElement('style')
   style.id = styleId
   style.innerHTML = `
+    #prompt-textarea {
+      padding-left: 36px;
+    }
     #suggestion-switch {
       position: absolute;
       left: 16px;
-      top: -40px;
+      top: 16px;
       cursor: pointer;
+    }
+    #prompt-textarea:has(+ div span button.btn[aria-label="Upload file"]) {
+      padding-left: 64px;
+    }
+    #prompt-textarea+div:has(span button.btn[aria-label="Upload file"]) {
+      left: 52px;
     }
     #suggestion-container {
       position: absolute;

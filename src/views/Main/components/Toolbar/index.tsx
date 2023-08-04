@@ -12,8 +12,8 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
 import ChecklistIcon from "@mui/icons-material/Checklist"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import WhatshotIcon from "@mui/icons-material/Whatshot"
-import GetAppIcon from "@mui/icons-material/GetApp"
-import PublishIcon from "@mui/icons-material/Publish"
+// import GetAppIcon from "@mui/icons-material/GetApp"
+// import PublishIcon from "@mui/icons-material/Publish"
 import ArticleIcon from '@mui/icons-material/Article';
 import styled from "styled-components"
 import { Link } from "react-router-dom"
@@ -96,6 +96,7 @@ export default function Toolbar() {
   }
 
   const onListTypeChange = (evt: React.MouseEvent<HTMLElement>, listType: ListType) => {
+    evt
     setListType(listType)
   }
   
@@ -134,7 +135,7 @@ export default function Toolbar() {
             </SearchContainerDiv>
           </>
         )}
-        <ActionBtnGroupDiv>
+        {listType === ListType.regular && <ActionBtnGroupDiv>
           <Link to="/create">
             <Tooltip title="Create a new Template">
               <IconButton aria-label="Create a new template">
@@ -189,7 +190,7 @@ export default function Toolbar() {
               </IconButton>
             </Tooltip>
           </Link>
-        </ActionBtnGroupDiv>
+        </ActionBtnGroupDiv>}
       </ToolbarActionDiv>
     </Box>
   )

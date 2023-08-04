@@ -20,7 +20,7 @@ export default function Main() {
         <Toolbar />
       </ToolbarContainerDiv>
       <ListContainerDiv>
-        <List  />
+        <List />
       </ListContainerDiv>
     </>
   )
