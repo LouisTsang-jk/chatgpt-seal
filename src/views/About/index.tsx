@@ -22,7 +22,7 @@ export default function About() {
 
       <Box my={1}>
         <Typography variant="h6">Version</Typography>
-        <Typography variant="body1">0.0.1(2023/07/30)</Typography>
+        <Typography variant="body1">0.1.1(2023/08/04)</Typography>
       </Box>
 
       <Box my={1}>
