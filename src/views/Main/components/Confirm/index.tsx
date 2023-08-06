@@ -3,10 +3,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
+  DialogContentText
 } from "@mui/material"
 import { useEffect } from "react"
-import { useToggle } from 'react-use'
+import { useToggle } from "react-use"
+import { useTranslation } from "react-i18next"
 
 interface ConfirmProps {
   visible: boolean
@@ -16,7 +17,7 @@ interface ConfirmProps {
 
 export default function Confirm(props: ConfirmProps) {
   const { visible, text, handleConfirm } = props
-
+  const { t } = useTranslation()
   const [open, openChange] = useToggle(false)
 
   const onConfirm = (agree: boolean) => {
@@ -42,10 +43,10 @@ export default function Confirm(props: ConfirmProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onConfirm(false)} color="primary">
-          Disagree
+          {t('Disagree')}
         </Button>
         <Button onClick={() => onConfirm(true)} color="primary" autoFocus>
-          Agree
+          {t('Agree')}
         </Button>
       </DialogActions>
     </Dialog>

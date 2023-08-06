@@ -15,6 +15,7 @@ import WhatshotIcon from "@mui/icons-material/Whatshot"
 import GetAppIcon from "@mui/icons-material/GetApp"
 import PublishIcon from "@mui/icons-material/Publish"
 import ArticleIcon from "@mui/icons-material/Article"
+import SettingsIcon from "@mui/icons-material/Settings"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { DataContext, ListType, StorageKey } from "@/DataContext"
@@ -23,6 +24,7 @@ import { useToggle } from "react-use"
 import Confirm from "../Confirm"
 import useStorage from "@/hooks/useStorage"
 import { useSnackbar } from "@/common/SnackbarContext"
+import { useTranslation } from "react-i18next"
 import useJsonExport from "@/hooks/useExport"
 
 const ToolbarTitleDiv = styled.div``
@@ -63,6 +65,7 @@ const ActionBtnGroupDiv = styled.div`
 `
 
 export default function Toolbar() {
+  const { t } = useTranslation()
   const { templateList, setTemplateList } = useContext(DataContext)
   const { listType, setListType } = useContext(DataContext)
   const { isBatchOperationActive, setIsBatchOperationActive } =
@@ -71,7 +74,7 @@ export default function Toolbar() {
   const [disabledBatchAction, disabledBatchActionChange] = useToggle(true)
   const [deleteDialogVisible, deleteDialogVisibleChange] = useToggle(false)
 
-  const { exportToJsonFile } = useJsonExport();
+  const { exportToJsonFile } = useJsonExport()
 
   const [, setTemplateStorage] = useStorage<Template[]>(StorageKey)
 
@@ -94,7 +97,7 @@ export default function Toolbar() {
     })
     setTemplateStorage([...updateTemplateList])
     setTemplateList([...updateTemplateList])
-    openSnackbar("Delete Template Success")
+    openSnackbar(t("Delete Template Success"))
     deleteDialogVisibleChange(false)
     setIsBatchOperationActive(false)
   }
@@ -126,12 +129,16 @@ export default function Toolbar() {
     >
       <ToolbarTitleDiv>
         <ToggleButtonGroup size="small" {...control}>
-          <ToggleButton value="regular" key="regular">
-            <ArticleIcon />
-          </ToggleButton>
-          <ToggleButton value="hot" key="hot">
-            <WhatshotIcon />
-          </ToggleButton>
+          <Tooltip title={t("模板列表")}>
+            <ToggleButton value="regular" key="regular">
+              <ArticleIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title={t("推荐模板")}>
+            <ToggleButton value="hot" key="hot">
+              <WhatshotIcon />
+            </ToggleButton>
+          </Tooltip>
         </ToggleButtonGroup>
       </ToolbarTitleDiv>
       <ToolbarActionDiv>
@@ -140,7 +147,7 @@ export default function Toolbar() {
             <SearchContainerDiv>
               <SearchInputIcon />
               <SearchInput
-                placeholder="Search"
+                placeholder={t("Search")}
                 inputProps={{ "aria-label": "search" }}
               />
             </SearchContainerDiv>
@@ -149,23 +156,28 @@ export default function Toolbar() {
         {listType === ListType.regular && (
           <ActionBtnGroupDiv>
             <Link to="/create">
-              <Tooltip title="Create a new Template">
-                <IconButton aria-label="Create a new template" sx={{margin: '0 4px'}}>
+              <Tooltip title={t("Create a new Template")}>
+                <IconButton
+                  aria-label="Create a new template"
+                  sx={{ margin: "0 4px" }}
+                >
                   <AddIcon />
                 </IconButton>
               </Tooltip>
             </Link>
-            <Tooltip title="Import">
-              <IconButton aria-label="Info">
-                <GetAppIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Export" onClick={onExport}>
-              <IconButton aria-label="Info">
+            <Link to="/import">
+              <Tooltip title={t("Import")}>
+                <IconButton aria-label="Import">
+                  <GetAppIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Tooltip title={t("Export")} onClick={onExport}>
+              <IconButton aria-label="Export">
                 <PublishIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Batch operate">
+            <Tooltip title={t("Batch operate")}>
               <ToggleButton
                 value="check"
                 aria-label="Batch operate"
@@ -187,8 +199,8 @@ export default function Toolbar() {
               <Tooltip
                 title={
                   disabledBatchAction
-                    ? "Please choose a template to delete"
-                    : "Delete"
+                    ? t("Please choose a template to delete")
+                    : t("Delete")
                 }
               >
                 <Box display="inline-flex">
@@ -200,15 +212,22 @@ export default function Toolbar() {
                     <DeleteOutlineIcon />
                     <Confirm
                       visible={deleteDialogVisible}
-                      text="Are you sure you want to delete the selected template?"
+                      text={t('Are you sure you want to delete the selected template?')}
                       handleConfirm={handleBatchDelete}
                     />
                   </IconButton>
                 </Box>
               </Tooltip>
             )}
+            <Link to="/setting">
+              <Tooltip title={t('Setting')}>
+                <IconButton aria-label="Setting">
+                  <SettingsIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
             <Link to="/about">
-              <Tooltip title="Info">
+              <Tooltip title={t('Info')}>
                 <IconButton aria-label="Info">
                   <HelpOutlineIcon />
                 </IconButton>

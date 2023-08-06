@@ -1,13 +1,13 @@
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import ReactDOM from "react-dom/client"
 import { createHashRouter, RouterProvider } from "react-router-dom"
-import "./index.css"
-import Main from "./views/Main"
+import "@/index.css"
+import Main from "@/views/Main"
 import styled from "styled-components"
-import { DataProvider } from "./DataContext"
-import Editor from "./views/Editor"
-import { SnackbarProvider } from "./common/SnackbarContext/SnackbarProvider"
-import About from "./views/About"
+import { DataProvider } from "@/DataContext"
+import Editor from "@/views/Editor"
+import { SnackbarProvider } from "@/common/SnackbarContext/SnackbarProvider"
+import About from "@/views/About"
 import {
   alpha,
   Card,
@@ -17,6 +17,11 @@ import {
   useMediaQuery
 } from "@mui/material"
 import { grey } from "@mui/material/colors"
+import Import from "@/views/Import"
+import Setting from "@/views/Setting"
+import "@/i18n"
+import useStorage from "@/hooks/useStorage"
+import { useTranslation } from "react-i18next"
 
 const router = createHashRouter([
   {
@@ -34,6 +39,14 @@ const router = createHashRouter([
   {
     path: "about",
     element: <About />
+  },
+  {
+    path: "import",
+    element: <Import />
+  },
+  {
+    path: "setting",
+    element: <Setting />
   }
 ])
 
@@ -49,6 +62,8 @@ const violetLight = alpha(violetDark, 0.2)
 
 const App = () => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
+
+  const { i18n } = useTranslation()
 
   const theme = useMemo(
     () =>
@@ -81,6 +96,11 @@ const App = () => {
       }),
     [prefersDarkMode]
   )
+
+  const [language] = useStorage("language")
+  useEffect(() => {
+    i18n.changeLanguage(language as "zh" | "cn")
+  }, [language])
 
   return (
     <React.StrictMode>

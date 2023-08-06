@@ -22,9 +22,9 @@ async function extractTranslations(filePath) {
   const matches = [];
 
   lines.forEach((line, lineNumber) => {
-    const lineMatches = line.match(/t\('(.+?)'\)/g) || [];
+    const lineMatches = line.match(/\bt\('(.+?)'\)/g) || [];
     lineMatches.forEach(match => {
-      const translationMatch = match.match(/t\('(.+?)'\)/);
+      const translationMatch = match.match(/\bt\('(.+?)'\)/);
       if (translationMatch && translationMatch[1]) {
         matches.push({
           path: `${filePath}:${lineNumber + 1}`,

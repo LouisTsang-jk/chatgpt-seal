@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build && cp manifest.json dist/manifest.json && cp logo.png dist/logo.png",
     "build:zip": "npm run build && cd dist && zip -r ../ChatGPT_Seal.zip .",
+    "i18n": "node scripts/collect-i18n-values.mjs",
     "watch": "vite build --watch",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -19,9 +20,12 @@
     "@mui/styled-engine-sc": "^5.12.0",
     "@types/node": "^20.2.5",
     "@types/styled-components": "^5.1.26",
+    "i18next": "^23.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.2",
+    "react-i18next": "^13.0.3",
     "react-router-dom": "^6.11.2",
     "react-use": "^17.4.0",
     "styled-components": "^5.3.11"

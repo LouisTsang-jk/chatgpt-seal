@@ -12,6 +12,7 @@ import { DataContext, ListType, StorageKey } from "@/DataContext"
 import useStorage from "@/hooks/useStorage"
 import EmptyIcon from "@mui/icons-material/Inbox"
 import HotPromptList from "@/conf/prompts_zh.json"
+import { useTranslation } from 'react-i18next'
 
 const TemplateDescriptionSpan = styled.span`
   color: #ccc;
@@ -32,6 +33,7 @@ export default function List() {
   const { templateList, setTemplateList } = useContext(DataContext)
   const { isBatchOperationActive } = useContext(DataContext)
   const { listType } = useContext(DataContext)
+  const { t } = useTranslation()
 
   const [templateStorage] = useStorage<Template[]>(StorageKey)
 
@@ -112,7 +114,7 @@ export default function List() {
           height="100%"
         >
           <EmptyIcon color="secondary" style={{ fontSize: 60 }} />
-          <Typography color="secondary" variant="h6">Data is empty</Typography>
+          <Typography color="secondary" variant="h6">{t('没有模板，请先创建')}</Typography>
         </Box>
       )}
     </Box>

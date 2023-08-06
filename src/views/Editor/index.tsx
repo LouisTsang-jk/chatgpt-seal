@@ -9,6 +9,7 @@ import { useSnackbar } from "@/common/SnackbarContext"
 import useKey from "react-use/lib/useKey"
 import { useNavigate } from "react-router-dom"
 import { StorageKey } from "@/DataContext"
+import { useTranslation } from "react-i18next"
 
 interface FormValues {
   title: string
@@ -17,7 +18,7 @@ interface FormValues {
 
 export default function Editor() {
   const [template, setTemplate] = useStorage<Template[]>(StorageKey)
-
+  const { t } = useTranslation()
   // const { id } = useParams()
 
   const newId = useId()
@@ -89,9 +90,9 @@ export default function Editor() {
           required
           fullWidth
           id="title"
-          label="Title"
+          label={t("标题")}
           autoFocus
-          {...register("title", { required: "Title is required." })}
+          {...register("title", { required: t("标题是必填项") })}
           error={Boolean(errors.title)}
           helperText={errors.title?.message || ""}
         />
@@ -100,11 +101,11 @@ export default function Editor() {
           margin="normal"
           required
           fullWidth
-          label="Template"
+          label={t("模板内容")}
           id="template"
           multiline
           rows={4}
-          {...register("template", { required: "Template is required." })}
+          {...register("template", { required: t("模板是必填项") })}
           error={Boolean(errors.template)}
           helperText={errors.template?.message || ""}
         />
@@ -118,12 +119,12 @@ export default function Editor() {
       >
         <Grid item>
           <Button fullWidth component={Link} to="/">
-            Cancel(Esc)
+            {t("取消")}(Esc)
           </Button>
         </Grid>
         <Grid item>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            Save( ⌘ + ↵ )
+            {t("保存")}( ⌘ + ↵ )
           </Button>
         </Grid>
       </Grid>
