@@ -147,7 +147,7 @@ function styleInitial() {
       background: rgba(255,255,255,0.6);
       box-shadow: 0 0 transparent, 0 0 transparent, 0 0 15px rgba(0,0,0,0.1);
       border: 1px solid rgba(0,0,0,0.1);
-      width: calc(100% - 52px);
+      width: 100%;
       right: 0;
       border-radius: 12px;
       backdrop-filter: blur(10px);

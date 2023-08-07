@@ -10,13 +10,13 @@ export default function About() {
   const { t } = useTranslation()
   return (
     <Container
-      sx={{ overflowY: "auto", maxHeight: "100vh" }}
+      sx={{ maxHeight: "100vh" }}
       style={{ padding: 0 }}
     >
       <RouteBreadcrumbs text={t('About')} />
       <Box my={1}>
         <Typography variant="h6">Version</Typography>
-        <Typography variant="body1">0.1.1(2023/08/04)</Typography>
+        <Typography variant="body1">0.1.2(2023/08/07)</Typography>
       </Box>
 
       <Box my={1}>

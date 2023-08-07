@@ -44,7 +44,6 @@ export default function List() {
       setTemplateList(templateStorage || [])
     }
     if (listType === ListType.hot) {
-      console.log('language:', language)
       const HotPromptList = language === 'zh' ? HotPromptZhList : HotPromptEnList
       setTemplateList((HotPromptList.map((prompt, promptIndex) => ({
         ...prompt,
@@ -75,7 +74,7 @@ export default function List() {
   }
 
   return (
-    <Box sx={{marginTop: '8px'}}>
+    <Box sx={{marginTop: '8px', maxHeight: '400px'}}>
       {templateList.map((template, templateIndex: number) => (
         <ListItemButton
           dense
