@@ -17,7 +17,7 @@ interface FormValues {
 }
 
 export default function Editor() {
-  const [template, setTemplate] = useStorage<Template[]>(StorageKey)
+  const [templates, setTemplates] = useStorage<Template[]>(StorageKey)
   const { t } = useTranslation()
   // const { id } = useParams()
 
@@ -39,7 +39,7 @@ export default function Editor() {
       onSubmit(values)
     },
     {},
-    [template]
+    [templates]
   )
 
   useKey(
@@ -60,10 +60,10 @@ export default function Editor() {
       title,
       body
     }
-    const updatedTemplate = template
-      ? [...template, newTemplate]
+    const updatedTemplate = templates
+      ? [...templates, newTemplate]
       : [newTemplate]
-    setTemplate(updatedTemplate)
+    setTemplates(updatedTemplate)
     openSnackbar("Create Template Success")
     location.reload()
     navigate(-1)
@@ -90,9 +90,9 @@ export default function Editor() {
           required
           fullWidth
           id="title"
-          label={t("标题")}
+          label={t("Title")}
           autoFocus
-          {...register("title", { required: t("标题是必填项") })}
+          {...register("title", { required: t("Title is required") })}
           error={Boolean(errors.title)}
           helperText={errors.title?.message || ""}
         />
@@ -101,11 +101,11 @@ export default function Editor() {
           margin="normal"
           required
           fullWidth
-          label={t("模板内容")}
+          label={t("Template content")}
           id="template"
           multiline
           rows={4}
-          {...register("template", { required: t("模板是必填项") })}
+          {...register("template", { required: t("Template content") })}
           error={Boolean(errors.template)}
           helperText={errors.template?.message || ""}
         />
@@ -119,12 +119,12 @@ export default function Editor() {
       >
         <Grid item>
           <Button fullWidth component={Link} to="/">
-            {t("取消")}(Esc)
+            {t("Cancel")}(Esc)
           </Button>
         </Grid>
         <Grid item>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            {t("保存")}( ⌘ + ↵ )
+            {t("Save")}( ⌘ + ↵ )
           </Button>
         </Grid>
       </Grid>

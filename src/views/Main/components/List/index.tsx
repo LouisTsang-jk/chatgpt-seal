@@ -11,7 +11,8 @@ import {
 import { DataContext, ListType, StorageKey } from "@/DataContext"
 import useStorage from "@/hooks/useStorage"
 import EmptyIcon from "@mui/icons-material/Inbox"
-import HotPromptList from "@/conf/prompts_zh.json"
+import HotPromptZhList from "@/conf/prompts_zh.json"
+import HotPromptEnList from "@/conf/prompts.json"
 import { useTranslation } from 'react-i18next'
 
 const TemplateDescriptionSpan = styled.span`
@@ -35,6 +36,7 @@ export default function List() {
   const { listType } = useContext(DataContext)
   const { t } = useTranslation()
 
+  const [language] = useStorage('language')
   const [templateStorage] = useStorage<Template[]>(StorageKey)
 
   useEffect(() => {
@@ -42,12 +44,14 @@ export default function List() {
       setTemplateList(templateStorage || [])
     }
     if (listType === ListType.hot) {
+      console.log('language:', language)
+      const HotPromptList = language === 'zh' ? HotPromptZhList : HotPromptEnList
       setTemplateList((HotPromptList.map((prompt, promptIndex) => ({
         ...prompt,
         id: `${promptIndex}`
       })) as Template[]) || [])
     }
-  }, [templateStorage, listType])
+  }, [templateStorage, listType, language])
 
   const handleToggle = (template: Template) => {
     if (!isBatchOperationActive) {
@@ -114,7 +118,7 @@ export default function List() {
           height="100%"
         >
           <EmptyIcon color="secondary" style={{ fontSize: 60 }} />
-          <Typography color="secondary" variant="h6">{t('没有模板，请先创建')}</Typography>
+          <Typography color="secondary" variant="h6">{t('No templates, please create one first')}</Typography>
         </Box>
       )}
     </Box>

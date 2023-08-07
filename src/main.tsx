@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo } from "react"
-import ReactDOM from "react-dom/client"
-import { createHashRouter, RouterProvider } from "react-router-dom"
-import "@/index.css"
-import Main from "@/views/Main"
-import styled from "styled-components"
-import { DataProvider } from "@/DataContext"
-import Editor from "@/views/Editor"
-import { SnackbarProvider } from "@/common/SnackbarContext/SnackbarProvider"
-import About from "@/views/About"
+import React, { useEffect, useMemo } from 'react'
+import ReactDOM from 'react-dom/client'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
+import '@/index.css'
+import Main from '@/views/Main'
+import styled from 'styled-components'
+import { DataProvider } from '@/DataContext'
+import Editor from '@/views/Editor'
+import { SnackbarProvider } from '@/common/SnackbarContext/SnackbarProvider'
+import About from '@/views/About'
 import {
   alpha,
   Card,
@@ -15,40 +15,42 @@ import {
   createTheme,
   ThemeProvider,
   useMediaQuery
-} from "@mui/material"
-import { grey } from "@mui/material/colors"
-import Import from "@/views/Import"
-import Setting from "@/views/Setting"
-import "@/i18n"
-import useStorage from "@/hooks/useStorage"
-import { useTranslation } from "react-i18next"
+} from '@mui/material'
+import { grey } from '@mui/material/colors'
+import Import from '@/views/Import'
+import Setting from '@/views/Setting'
+import '@/i18n'
+import useStorage from '@/hooks/useStorage'
+import { useTranslation } from 'react-i18next'
 
-const router = createHashRouter([
+const routes = [
   {
-    path: "/",
+    path: '/',
     element: <Main />
   },
   {
-    path: "create",
+    path: 'create',
     element: <Editor />
   },
   {
-    path: "edit/:id",
+    path: 'edit/:id',
     element: <Editor />
   },
   {
-    path: "about",
+    path: 'about',
     element: <About />
   },
   {
-    path: "import",
+    path: 'import',
     element: <Import />
   },
   {
-    path: "setting",
+    path: 'setting',
     element: <Setting />
   }
-])
+]
+
+const router = createHashRouter(routes)
 
 const LayoutDiv = styled.div`
   display: flex;
@@ -56,12 +58,12 @@ const LayoutDiv = styled.div`
   width: 400px;
 `
 
-const violetDark = "rgb(171, 104, 255)"
+const violetDark = 'rgb(171, 104, 255)'
 const violetMain = alpha(violetDark, 0.7)
 const violetLight = alpha(violetDark, 0.2)
 
 const App = () => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const { i18n } = useTranslation()
 
@@ -75,10 +77,10 @@ const App = () => {
             light: violetLight
           },
           secondary: grey,
-          mode: prefersDarkMode ? "dark" : "light",
+          mode: prefersDarkMode ? 'dark' : 'light',
           background: {
-            default: prefersDarkMode ? "#213547" : "#fff",
-            paper: prefersDarkMode ? "#213547" : "#fff"
+            default: prefersDarkMode ? '#213547' : '#fff',
+            paper: prefersDarkMode ? '#213547' : '#fff'
           }
         },
         components: {
@@ -97,9 +99,9 @@ const App = () => {
     [prefersDarkMode]
   )
 
-  const [language] = useStorage("language")
+  const [language] = useStorage('language')
   useEffect(() => {
-    i18n.changeLanguage(language as "zh" | "cn")
+    i18n.changeLanguage(language as 'zh' | 'cn')
   }, [language])
 
   return (
@@ -107,10 +109,10 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <DataProvider>
           <LayoutDiv>
-            <Card sx={{ overflowY: "auto", borderRadius: 0 }}>
+            <Card sx={{ overflowY: 'auto', borderRadius: 0 }}>
               <CardContent>
                 <SnackbarProvider>
-                  <RouterProvider router={router} />
+                  <RouterProvider router={router}></RouterProvider>
                 </SnackbarProvider>
               </CardContent>
             </Card>
@@ -121,6 +123,6 @@ const App = () => {
   )
 }
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <App />
 )

@@ -38,7 +38,7 @@ export function SnackbarProvider({ children }: SnackbarProviderProps) {
           horizontal: "center"
         }}
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={1500}
         onClose={closeSnackbar}
         message={snackbarMessage}
         ContentProps={{

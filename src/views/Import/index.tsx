@@ -1,22 +1,34 @@
-import useStorage from "@/hooks/useStorage"
-import React, { useCallback } from "react"
-import { useDropzone, DropzoneOptions } from "react-dropzone"
+import useStorage from '@/hooks/useStorage'
+import React, { useCallback } from 'react'
+import { useDropzone, DropzoneOptions } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
+import RouteBreadcrumbs from '../components/RouteBreadcrumbs'
+import { useSnackbar } from '@/common/SnackbarContext'
 
 const Import: React.FC = () => {
-  const [, setTemplates] = useStorage<Template[]>("templates")
+  const [templates, setTemplates] = useStorage<Template[]>('templates')
+  const { openSnackbar } = useSnackbar()
 
-  const onDrop: DropzoneOptions["onDrop"] = useCallback(
+  const { t } = useTranslation()
+  const onDrop: DropzoneOptions['onDrop'] = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach((file: File) => {
         const reader = new FileReader()
-
-        reader.onabort = () => console.log("file reading was aborted")
-        reader.onerror = () => console.log("file reading has failed")
+        reader.onabort = () => console.log('file reading was aborted')
+        reader.onerror = () => console.log('file reading has failed')
         reader.onload = () => {
+          console.log('reader:', reader)
           const binaryStr = reader.result as string
-          const templatesFromFile: Template[] = JSON.parse(binaryStr)
-          console.log("binaryStr:", binaryStr)
-          setTemplates(templatesFromFile)
+          try {
+            const templatesFromFile: Template[] = JSON.parse(binaryStr)
+            console.log('templatesFromFile:', templatesFromFile)
+            const updatedTemplate = templates
+              ? [...templates, ...templatesFromFile]
+              : templatesFromFile
+            setTemplates(updatedTemplate)
+            openSnackbar(t('Import Template Success'))
+
+          } catch (err) {}
         }
         reader.readAsText(file)
       })
@@ -26,10 +38,16 @@ const Import: React.FC = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      <p>拖拽上传，支持多个文件同时上传</p>
-    </div>
+    <>
+      <RouteBreadcrumbs text={t('Import')} />
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <p>{t('Drag and drop to upload, support multiple files')}</p>
+        <p>
+          {t('The current number of templates is:')} {templates?.length || 0}
+        </p>
+      </div>
+    </>
   )
 }
 

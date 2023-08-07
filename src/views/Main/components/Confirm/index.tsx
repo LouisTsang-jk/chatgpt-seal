@@ -43,10 +43,10 @@ export default function Confirm(props: ConfirmProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onConfirm(false)} color="primary">
-          {t('Disagree')}
+          {t('Cancel')}
         </Button>
         <Button onClick={() => onConfirm(true)} color="primary" autoFocus>
-          {t('Agree')}
+          {t('Yes')}
         </Button>
       </DialogActions>
     </Dialog>

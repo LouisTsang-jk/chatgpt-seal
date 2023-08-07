@@ -5,27 +5,27 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Tooltip
-} from "@mui/material"
-import SearchIcon from "@mui/icons-material/Search"
-import AddIcon from "@mui/icons-material/Add"
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
-import ChecklistIcon from "@mui/icons-material/Checklist"
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
-import WhatshotIcon from "@mui/icons-material/Whatshot"
-import GetAppIcon from "@mui/icons-material/GetApp"
-import PublishIcon from "@mui/icons-material/Publish"
-import ArticleIcon from "@mui/icons-material/Article"
-import SettingsIcon from "@mui/icons-material/Settings"
-import styled from "styled-components"
-import { Link } from "react-router-dom"
-import { DataContext, ListType, StorageKey } from "@/DataContext"
-import { useContext, useEffect } from "react"
-import { useToggle } from "react-use"
-import Confirm from "../Confirm"
-import useStorage from "@/hooks/useStorage"
-import { useSnackbar } from "@/common/SnackbarContext"
-import { useTranslation } from "react-i18next"
-import useJsonExport from "@/hooks/useExport"
+} from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import AddIcon from '@mui/icons-material/Add'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import ChecklistIcon from '@mui/icons-material/Checklist'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import WhatshotIcon from '@mui/icons-material/Whatshot'
+import GetAppIcon from '@mui/icons-material/GetApp'
+import PublishIcon from '@mui/icons-material/Publish'
+import ArticleIcon from '@mui/icons-material/Article'
+import SettingsIcon from '@mui/icons-material/Settings'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import { DataContext, ListType, StorageKey } from '@/DataContext'
+import { useContext, useEffect } from 'react'
+import { useToggle } from 'react-use'
+import Confirm from '../Confirm'
+import useStorage from '@/hooks/useStorage'
+import { useSnackbar } from '@/common/SnackbarContext'
+import { useTranslation } from 'react-i18next'
+import useJsonExport from '@/hooks/useExport'
 
 const ToolbarTitleDiv = styled.div``
 
@@ -97,7 +97,7 @@ export default function Toolbar() {
     })
     setTemplateStorage([...updateTemplateList])
     setTemplateList([...updateTemplateList])
-    openSnackbar(t("Delete Template Success"))
+    openSnackbar(t('Delete Template Success'))
     deleteDialogVisibleChange(false)
     setIsBatchOperationActive(false)
   }
@@ -107,7 +107,7 @@ export default function Toolbar() {
     listType: ListType
   ) => {
     evt
-    setListType(listType)
+    listType && setListType(listType)
   }
 
   const onExport = () => {
@@ -129,16 +129,18 @@ export default function Toolbar() {
     >
       <ToolbarTitleDiv>
         <ToggleButtonGroup size="small" {...control}>
-          <Tooltip title={t("模板列表")}>
-            <ToggleButton value="regular" key="regular">
+          <ToggleButton value="regular" key="regular">
+            <Tooltip title={t('Template list')}>
               <ArticleIcon />
-            </ToggleButton>
-          </Tooltip>
-          <Tooltip title={t("推荐模板")}>
+            </Tooltip>
+          </ToggleButton>
+          {!isBatchOperationActive && (
             <ToggleButton value="hot" key="hot">
-              <WhatshotIcon />
+              <Tooltip title={t('Recommended templates')}>
+                <WhatshotIcon />
+              </Tooltip>
             </ToggleButton>
-          </Tooltip>
+          )}
         </ToggleButtonGroup>
       </ToolbarTitleDiv>
       <ToolbarActionDiv>
@@ -147,46 +149,51 @@ export default function Toolbar() {
             <SearchContainerDiv>
               <SearchInputIcon />
               <SearchInput
-                placeholder={t("Search")}
-                inputProps={{ "aria-label": "search" }}
+                placeholder={t('Search')}
+                inputProps={{ 'aria-label': 'search' }}
               />
             </SearchContainerDiv>
           </>
         )}
         {listType === ListType.regular && (
           <ActionBtnGroupDiv>
-            <Link to="/create">
-              <Tooltip title={t("Create a new Template")}>
-                <IconButton
-                  aria-label="Create a new template"
-                  sx={{ margin: "0 4px" }}
-                >
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            <Link to="/import">
-              <Tooltip title={t("Import")}>
-                <IconButton aria-label="Import">
-                  <GetAppIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            <Tooltip title={t("Export")} onClick={onExport}>
-              <IconButton aria-label="Export">
-                <PublishIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t("Batch operate")}>
+            {!isBatchOperationActive && (
+              <>
+                <Link to="/create">
+                  <Tooltip title={t('Create a new Template')}>
+                    <IconButton
+                      aria-label="Create a new template"
+                      sx={{ margin: '0 4px' }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Link to="/import">
+                  <Tooltip title={t('Import')}>
+                    <IconButton aria-label="Import">
+                      <GetAppIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Tooltip title={t('Export')} onClick={onExport}>
+                  <IconButton aria-label="Export">
+                    <PublishIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+
+            <Tooltip title={t('Batch operation')}>
               <ToggleButton
                 value="check"
-                aria-label="Batch operate"
+                aria-label="Batch operation"
                 selected={isBatchOperationActive}
                 sx={{
                   border: 0,
-                  borderRadius: "50%",
-                  padding: "8px",
-                  margin: "0 4px"
+                  borderRadius: '50%',
+                  padding: '8px',
+                  margin: '0 4px'
                 }}
                 onChange={() =>
                   setIsBatchOperationActive(!isBatchOperationActive)
@@ -199,8 +206,8 @@ export default function Toolbar() {
               <Tooltip
                 title={
                   disabledBatchAction
-                    ? t("Please choose a template to delete")
-                    : t("Delete")
+                    ? t('Please choose a template to delete')
+                    : t('Delete')
                 }
               >
                 <Box display="inline-flex">
@@ -212,27 +219,33 @@ export default function Toolbar() {
                     <DeleteOutlineIcon />
                     <Confirm
                       visible={deleteDialogVisible}
-                      text={t('Are you sure you want to delete the selected template?')}
+                      text={t(
+                        'Are you sure you want to delete the selected template?'
+                      )}
                       handleConfirm={handleBatchDelete}
                     />
                   </IconButton>
                 </Box>
               </Tooltip>
             )}
-            <Link to="/setting">
-              <Tooltip title={t('Setting')}>
-                <IconButton aria-label="Setting">
-                  <SettingsIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            <Link to="/about">
-              <Tooltip title={t('Info')}>
-                <IconButton aria-label="Info">
-                  <HelpOutlineIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
+            {!isBatchOperationActive && (
+              <>
+                <Link to="setting">
+                  <Tooltip title={t('Setting')}>
+                    <IconButton aria-label="Setting">
+                      <SettingsIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Link to="/about">
+                  <Tooltip title={t('Info')}>
+                    <IconButton aria-label="Info">
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+              </>
+            )}
           </ActionBtnGroupDiv>
         )}
       </ToolbarActionDiv>

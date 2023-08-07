@@ -76,6 +76,9 @@ function loadSuggestion(container: HTMLElement) {
   return new Promise<HTMLElement>((resolve) => {
     chrome.storage.local.get([STORAGE_KEY], (data) => {
       const list = (data[STORAGE_KEY] || []) as Template[]
+      if (list.length === 0) {
+        window.alert('No template found. Please create one.')
+      }
       const ul = document.createElement('ul')
       ul.id = 'prompt-suggestion'
       ul.className = 'chatgpt-template-prompt-suggestion'

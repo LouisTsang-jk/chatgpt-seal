@@ -17,19 +17,19 @@
   {
     "category": "Business",
     "title": "Crisp and Professional Email to Superior: A Guide",
-    "body": "＊You are about to reply to an email, and the recipient is your superior\\n＊You need to express your ideas in a concise and clear language in the email, ensuring the superior can quickly grasp the main points\\n＊Your language should be business-like, maintaining respect and professionalism\\n＊Please insert your main content in the marked position below:\\n---Start---\\nDear [Superior's Name],\\n\\n(Insert main content here)\\n\\nBest regards,\\n[Your Name]\\n---End---\\n"
+    "body": "＊You are about to reply to an email, and the recipient is your superior\n＊You need to express your ideas in a concise and clear language in the email, ensuring the superior can quickly grasp the main points\n＊Your language should be business-like, maintaining respect and professionalism\n＊Please insert your main content in the marked position below:\n---Start---\nDear [Superior's Name],\n\n(Insert main content here)\n\nBest regards,\n[Your Name]\n---End---\n"
   },
   {
     "category": "Language",
     "title": "Text Review and Editing",
-    "body": "＊You are given a sentence or a paragraph\\n＊Your task is to review the provided text, checking for grammatical errors, awkward phrases, or any issues affecting its readability and clarity\\n＊Ensure that the sentence or paragraph flows smoothly and is free of any language issues\\n＊Make use of resources such as grammar and style guides\\n＊Please make any necessary corrections to the provided text, which is marked below:\\n---Start---\\n[Insert Text Here]\\n---End---\\n\\n"
+    "body": "＊You are given a sentence or a paragraph\n＊Your task is to review the provided text, checking for grammatical errors, awkward phrases, or any issues affecting its readability and clarity\n＊Ensure that the sentence or paragraph flows smoothly and is free of any language issues\n＊Make use of resources such as grammar and style guides\n＊Please make any necessary corrections to the provided text, which is marked below:\n---Start---\n[Insert Text Here]\n---End---\n\n"
   },{
     "category": "Programming",
     "title": "Create and Analyze Regular Expressions",
-    "body": "＊You are to create a Regular Expression to match a specific string pattern\\n＊First, please provide your Regular Expression\\n＊Then, conduct a detailed analysis of your Regular Expression, explaining its structure and how it matches the intended string pattern\\n＊You may use online tools and resources to aid in constructing and testing your Regular Expression\\n＊Please provide your Regular Expression and analysis in the marked positions below:\\n---Start---\\nRegular Expression: [Insert your Regular Expression here]\\n\\nAnalysis: [Insert your analysis of the Regular Expression here]\\n---End---\\n\\n\\n"
+    "body": "＊You are to create a Regular Expression to match a specific string pattern\n＊First, please provide your Regular Expression\n＊Then, conduct a detailed analysis of your Regular Expression, explaining its structure and how it matches the intended string pattern\n＊You may use online tools and resources to aid in constructing and testing your Regular Expression\n＊Please provide your Regular Expression and analysis in the marked positions below:\n---Start---\nRegular Expression: [Insert your Regular Expression here]\n\nAnalysis: [Insert your analysis of the Regular Expression here]\n---End---\n\n\n"
   },{
     "category": "General",
     "title": "Create a New Prompt Template",
-    "body": "＊Your task is to create a new prompt template for a specific situation or task\\n＊Identify the goal of the task, the intended audience, and any specific instructions or requirements\\n＊Your prompt template should guide the user to provide necessary details and follow the appropriate format\\n＊Consider using examples and clear, direct instructions to ensure that the prompt is easy to understand and use\\n＊Please provide your new prompt template in the marked position below:\\n---Start---\\n[Insert your prompt template here]\\n---End---\\n\\n\\n"
+    "body": "＊Your task is to create a new prompt template for a specific situation or task\n＊Identify the goal of the task, the intended audience, and any specific instructions or requirements\n＊Your prompt template should guide the user to provide necessary details and follow the appropriate format\n＊Consider using examples and clear, direct instructions to ensure that the prompt is easy to understand and use\n＊Please provide your new prompt template in the marked position below:\n---Start---\n[Insert your prompt template here]\n---End---\n\n\n"
   }
 ]
