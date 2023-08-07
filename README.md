@@ -22,6 +22,12 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 
 ## 📥 如何安装
 
+###  方法一：Google 应用商店（推荐🌟）
+
+[Chrome 应用商店 | ChatGPT Seal](https://chrome.google.com/webstore/detail/chatgpt-seal/mebdcpkmkjfchchihecliclanaefgffd?utm_source=ext_sidebar&hl=zh-CN)
+
+### 方法二：手动安装
+
 1. 从 [下载页面](https://github.com/LouisTsang-jk/chatgpt-seal/releases) 下载安装文件(`ChatGPT_Seal.zip`)。
 2. 打开 Chrome 浏览器，进入扩展程序界面(`chrome://extensions/`)。
 3. 打开开发者模式。
