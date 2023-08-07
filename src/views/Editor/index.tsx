@@ -9,6 +9,7 @@ import { useSnackbar } from "@/common/SnackbarContext"
 import useKey from "react-use/lib/useKey"
 import { useNavigate } from "react-router-dom"
 import { StorageKey } from "@/DataContext"
+import { useTranslation } from "react-i18next"
 
 interface FormValues {
   title: string
@@ -16,8 +17,8 @@ interface FormValues {
 }
 
 export default function Editor() {
-  const [template, setTemplate] = useStorage<Template[]>(StorageKey)
-
+  const [templates, setTemplates] = useStorage<Template[]>(StorageKey)
+  const { t } = useTranslation()
   // const { id } = useParams()
 
   const newId = useId()
@@ -38,7 +39,7 @@ export default function Editor() {
       onSubmit(values)
     },
     {},
-    [template]
+    [templates]
   )
 
   useKey(
@@ -59,10 +60,10 @@ export default function Editor() {
       title,
       body
     }
-    const updatedTemplate = template
-      ? [...template, newTemplate]
+    const updatedTemplate = templates
+      ? [...templates, newTemplate]
       : [newTemplate]
-    setTemplate(updatedTemplate)
+    setTemplates(updatedTemplate)
     openSnackbar("Create Template Success")
     location.reload()
     navigate(-1)
@@ -89,9 +90,9 @@ export default function Editor() {
           required
           fullWidth
           id="title"
-          label="Title"
+          label={t("Title")}
           autoFocus
-          {...register("title", { required: "Title is required." })}
+          {...register("title", { required: t("Title is required") })}
           error={Boolean(errors.title)}
           helperText={errors.title?.message || ""}
         />
@@ -100,11 +101,11 @@ export default function Editor() {
           margin="normal"
           required
           fullWidth
-          label="Template"
+          label={t("Template content")}
           id="template"
           multiline
           rows={4}
-          {...register("template", { required: "Template is required." })}
+          {...register("template", { required: t("Template content") })}
           error={Boolean(errors.template)}
           helperText={errors.template?.message || ""}
         />
@@ -118,12 +119,12 @@ export default function Editor() {
       >
         <Grid item>
           <Button fullWidth component={Link} to="/">
-            Cancel(Esc)
+            {t("Cancel")}(Esc)
           </Button>
         </Grid>
         <Grid item>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            Save( ⌘ + ↵ )
+            {t("Save")}( ⌘ + ↵ )
           </Button>
         </Grid>
       </Grid>

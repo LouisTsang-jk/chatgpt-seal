@@ -1,31 +1,22 @@
-import { Box, Container, IconButton, Link, Typography } from "@mui/material"
-import { Link as RouterLink } from "react-router-dom"
+import { Box, Container, Link, Typography } from "@mui/material"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import EmailIcon from "@mui/icons-material/Email"
 import HelpIcon from "@mui/icons-material/Help"
 import FeedbackIcon from "@mui/icons-material/Feedback"
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
+import { useTranslation } from 'react-i18next'
+import RouteBreadcrumbs from "@/views/components/RouteBreadcrumbs"
 
 export default function About() {
+  const { t } = useTranslation()
   return (
     <Container
       sx={{ overflowY: "auto", maxHeight: "100vh" }}
       style={{ padding: 0 }}
     >
-      <Box display={"flex"}>
-        <RouterLink to="/">
-          <IconButton aria-label="back" sx={{ margin: "0 0 8px 0" }}>
-            <KeyboardBackspaceIcon />
-          </IconButton>
-        </RouterLink>
-      </Box>
-      <Typography variant="h4" gutterBottom>
-        关于
-      </Typography>
-
+      <RouteBreadcrumbs text={t('About')} />
       <Box my={1}>
         <Typography variant="h6">Version</Typography>
-        <Typography variant="body1">0.0.1(2023/07/30)</Typography>
+        <Typography variant="body1">0.1.1(2023/08/04)</Typography>
       </Box>
 
       <Box my={1}>
