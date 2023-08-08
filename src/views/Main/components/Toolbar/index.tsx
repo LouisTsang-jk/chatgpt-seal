@@ -68,10 +68,8 @@ export default function Toolbar() {
 
   const { templateList, listType, isBatchOperationActive } = globalState
 
-  const [disabledBatchAction, disabledBatchActionChange] =
-    useState<boolean>(true)
-  const [deleteDialogVisible, deleteDialogVisibleChange] =
-    useState<boolean>(false)
+  const [disabledBatchAction, setDisabledBatchAction] = useState<boolean>(true)
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState<boolean>(false)
 
   const { exportToJsonFile } = useJsonExport()
 
@@ -82,24 +80,26 @@ export default function Toolbar() {
   useEffect(() => {
     for (const template of templateList.value) {
       if (template.checked) {
-        console.log('template', template)
-        disabledBatchActionChange(false)
+        setDisabledBatchAction(false)
         return
       }
     }
-    disabledBatchActionChange(true)
+    setDisabledBatchAction(true)
   }, [templateList.value])
 
   const handleBatchDelete = (agree: boolean) => {
-    if (!agree) return
+    if (!agree) {
+      setDeleteDialogVisible(false)
+      return
+    }
     const updateTemplateList = templateList.value.filter((template) => {
       return !template.checked
     })
+    setDeleteDialogVisible(false)
+    isBatchOperationActive.value = false
     setTemplateStorage([...updateTemplateList])
     templateList.value = [...updateTemplateList]
     openSnackbar(t('Delete Template Success'))
-    deleteDialogVisibleChange(false)
-    isBatchOperationActive.value = false
   }
 
   const onListTypeChange = (
@@ -119,6 +119,13 @@ export default function Toolbar() {
     value: listType.value,
     onChange: onListTypeChange,
     exclusive: true
+  }
+
+  const onBatchChange = () => {
+    isBatchOperationActive.value = !isBatchOperationActive.value
+    if (!isBatchOperationActive.value) {
+      setDeleteDialogVisible(false)
+    }
   }
 
   return (
@@ -196,10 +203,7 @@ export default function Toolbar() {
                   padding: '8px',
                   margin: '0 4px'
                 }}
-                onChange={() =>
-                  (isBatchOperationActive.value =
-                    !isBatchOperationActive.value)
-                }
+                onChange={onBatchChange}
               >
                 <ChecklistIcon />
               </ToggleButton>
@@ -215,17 +219,10 @@ export default function Toolbar() {
                 <Box display="inline-flex">
                   <IconButton
                     disabled={disabledBatchAction}
-                    onClick={() => deleteDialogVisibleChange(true)}
+                    onClick={() => setDeleteDialogVisible(true)}
                     aria-label="Delete"
                   >
                     <DeleteOutlineIcon />
-                    <Confirm
-                      visible={deleteDialogVisible}
-                      text={t(
-                        'Are you sure you want to delete the selected template?'
-                      )}
-                      handleConfirm={handleBatchDelete}
-                    />
                   </IconButton>
                 </Box>
               </Tooltip>
@@ -251,6 +248,11 @@ export default function Toolbar() {
           </ActionBtnGroupDiv>
         )}
       </ToolbarActionDiv>
+      <Confirm
+        visible={deleteDialogVisible}
+        text={t('Are you sure you want to delete the selected template?')}
+        handleConfirm={handleBatchDelete}
+      />
     </Box>
   )
 }

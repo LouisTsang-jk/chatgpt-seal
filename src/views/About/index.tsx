@@ -41,13 +41,13 @@ export default function About() {
       <Box my={1}>
         <Typography variant="h6">Email</Typography>
         <Link
-          href="mailto:chiyamakagami@foxmail.com"
+          href="mailto:louistsangjk@gmail.com"
           target="_blank"
           rel="noopener"
         >
           <Box display="flex" alignItems="center">
             <EmailIcon />
-            <Box ml={1}>chiyamakagami@foxmail.com</Box>
+            <Box ml={1}>louistsangjk@gmail.com</Box>
           </Box>
         </Link>
       </Box>
@@ -69,7 +69,7 @@ export default function About() {
       <Box my={1}>
         <Typography variant="h6">Feedback</Typography>
         <Link
-          href="mailto:chiyamakagami@foxmail.com?subject=Feedback"
+          href="mailto:louistsangjk@gmail.com?subject=Feedback"
           target="_blank"
           rel="noopener"
         >
