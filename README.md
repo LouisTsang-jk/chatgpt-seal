@@ -35,6 +35,7 @@ ChatGPT_Seal 是一款针对 ChatGPT 的 Chrome 插件，帮助用户在 ChatGPT
 5. 此时，ChatGPT_Seal 已经成功安装到你的 Chrome 浏览器中，你可以在右上角的小海豹图标中查看。
 
 ## 🛠️ 如何使用
+![Rec](snapshot/rec.gif)
 
 1. 打开 ChatGPT 页面。
 2. 点击浏览器右上角的 ChatGPT_Seal 小海豹图标创建模板。
