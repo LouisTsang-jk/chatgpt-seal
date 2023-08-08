@@ -4,6 +4,7 @@ import { useDropzone, DropzoneOptions } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import RouteBreadcrumbs from '../components/RouteBreadcrumbs'
 import { useSnackbar } from '@/common/SnackbarContext'
+import { v4 as uuidv4 } from 'uuid'
 
 const Import: React.FC = () => {
   const [templates, setTemplates] = useStorage<Template[]>('templates')
@@ -17,17 +18,18 @@ const Import: React.FC = () => {
         reader.onabort = () => console.log('file reading was aborted')
         reader.onerror = () => console.log('file reading has failed')
         reader.onload = () => {
-          console.log('reader:', reader)
           const binaryStr = reader.result as string
           try {
             const templatesFromFile: Template[] = JSON.parse(binaryStr)
-            console.log('templatesFromFile:', templatesFromFile)
+            const newTemplates = templatesFromFile.map((template) => ({
+              ...template,
+              id: uuidv4()
+            }))
             const updatedTemplate = templates
-              ? [...templates, ...templatesFromFile]
-              : templatesFromFile
+              ? [...templates, ...newTemplates]
+              : newTemplates
             setTemplates(updatedTemplate)
             openSnackbar(t('Import Template Success'))
-
           } catch (err) {}
         }
         reader.readAsText(file)

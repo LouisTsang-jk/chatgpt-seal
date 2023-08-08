@@ -25,5 +25,7 @@
   "Drag and drop to upload, support multiple files": "拖拽上传，支持多个文件同时上传",
   "The current number of templates is:": "当前模板数量：",
   "Language": "语言",
-  "Please choose a template to delete": "请选择模板再进行删除"
+  "Please choose a template to delete": "请选择模板再进行删除",
+  "Edit Template Success": "编辑模板成功",
+  "Create Template Success": "创建模板成功"
 }

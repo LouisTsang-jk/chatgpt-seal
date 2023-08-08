@@ -1,15 +1,16 @@
-import { useId } from "react"
-import { Link } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import Button from "@mui/material/Button"
-import TextField from "@mui/material/TextField"
-import { Grid } from "@mui/material"
-import useStorage from "@/hooks/useStorage"
-import { useSnackbar } from "@/common/SnackbarContext"
-import useKey from "react-use/lib/useKey"
-import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
-import { StorageKey } from "@/globalState"
+import { useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import { Grid } from '@mui/material'
+import useStorage from '@/hooks/useStorage'
+import { useSnackbar } from '@/common/SnackbarContext'
+import useKey from 'react-use/lib/useKey'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { StorageKey } from '@/globalState'
+import { v4 as uuidv4 } from 'uuid'
 
 interface FormValues {
   title: string
@@ -19,20 +20,31 @@ interface FormValues {
 export default function Editor() {
   const [templates, setTemplates] = useStorage<Template[]>(StorageKey)
   const { t } = useTranslation()
-  // const { id } = useParams()
+  const { id } = useParams()
 
-  const newId = useId()
+  const newId = uuidv4()
   const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors }
   } = useForm<FormValues>()
 
+  useEffect(() => {
+    if (id && templates) {
+      const template = templates.find((template) => template.id === id)
+      if (template) {
+        setValue('title', template.title)
+        setValue('template', template.body)
+      }
+    }
+  }, [id, templates])
+
   useKey(
-    (event) => event.code === "Enter" && (event.ctrlKey || event.metaKey),
+    (event) => event.code === 'Enter' && (event.ctrlKey || event.metaKey),
     (event) => {
       event.preventDefault()
       const values = getValues()
@@ -43,7 +55,7 @@ export default function Editor() {
   )
 
   useKey(
-    (event) => event.code === "Escape",
+    (event) => event.code === 'Escape',
     (event) => {
       event.preventDefault()
       navigate(-1)
@@ -64,13 +76,26 @@ export default function Editor() {
       ? [...templates, newTemplate]
       : [newTemplate]
     setTemplates(updatedTemplate)
-    openSnackbar("Create Template Success")
+    openSnackbar(t('Create Template Success'))
+    location.reload()
+    navigate(-1)
+  }
+
+  function editTemplate(id: string, title: string, body: string) {
+    if (!templates) return
+    const updatedTemplates = templates.map((template) =>
+      template.id === id ? { ...template, title, body } : template
+    )
+    setTemplates(updatedTemplates)
+    openSnackbar(t('Edit Template Success'))
     location.reload()
     navigate(-1)
   }
 
   function onSubmit(data: FormValues) {
-    createTemplate(data.title, data.template)
+    id
+      ? editTemplate(id, data.title, data.template)
+      : createTemplate(data.title, data.template)
   }
 
   return (
@@ -81,7 +106,7 @@ export default function Editor() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      sx={{ mt: 1, height: "100%" }}
+      sx={{ mt: 1, height: '100%' }}
     >
       <Grid item>
         <TextField
@@ -90,24 +115,24 @@ export default function Editor() {
           required
           fullWidth
           id="title"
-          label={t("Title")}
+          label={t('Title')}
           autoFocus
-          {...register("title", { required: t("Title is required") })}
+          {...register('title', { required: t('Title is required') })}
           error={Boolean(errors.title)}
-          helperText={errors.title?.message || ""}
+          helperText={errors.title?.message || ''}
         />
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          label={t("Template content")}
+          label={t('Template content')}
           id="template"
           multiline
           rows={4}
-          {...register("template", { required: t("Template content") })}
+          {...register('template', { required: t('Template content') })}
           error={Boolean(errors.template)}
-          helperText={errors.template?.message || ""}
+          helperText={errors.template?.message || ''}
         />
       </Grid>
       <Grid
@@ -119,12 +144,12 @@ export default function Editor() {
       >
         <Grid item>
           <Button fullWidth component={Link} to="/">
-            {t("Cancel")}(Esc)
+            {t('Cancel')}(Esc)
           </Button>
         </Grid>
         <Grid item>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            {t("Save")}( ⌘ + ↵ )
+            {t('Save')}( ⌘ + ↵ )
           </Button>
         </Grid>
       </Grid>

@@ -16,7 +16,7 @@ export default function About() {
       <RouteBreadcrumbs text={t('About')} />
       <Box my={1}>
         <Typography variant="h6">Version</Typography>
-        <Typography variant="body1">0.1.2(2023/08/07)</Typography>
+        <Typography variant="body1">0.1.3(2023/08/09)</Typography>
       </Box>
 
       <Box my={1}>

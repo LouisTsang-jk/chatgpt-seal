@@ -83,9 +83,19 @@ const App = () => {
           }
         },
         components: {
+          MuiToggleButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: '8px'
+              }
+            }
+          },
           MuiIconButton: {
             styleOverrides: {
-              colorPrimary: violetMain
+              root: {
+                borderRadius: '8px'
+              },
+              colorPrimary: violetMain,
             }
           },
           MuiIcon: {
@@ -99,6 +109,7 @@ const App = () => {
   )
 
   const [language] = useStorage('language')
+  
   useEffect(() => {
     i18n.changeLanguage(language as 'zh' | 'en' || 'zh')
   }, [language])

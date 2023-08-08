@@ -199,7 +199,6 @@ export default function Toolbar() {
                 selected={isBatchOperationActive.value}
                 sx={{
                   border: 0,
-                  borderRadius: '50%',
                   padding: '8px',
                   margin: '0 4px'
                 }}

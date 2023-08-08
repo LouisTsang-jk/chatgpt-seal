@@ -19,7 +19,7 @@ const Setting = () => {
       <h1>{t('Setting')}</h1>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
-          <InputLabel id="language-select-label">Language</InputLabel>
+          <InputLabel id="language-select-label">{t('Language')}</InputLabel>
           <Select
             labelId="language-select-label"
             id="demo-simple-select"
