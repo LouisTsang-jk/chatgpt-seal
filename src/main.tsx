@@ -4,7 +4,6 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 import '@/index.css'
 import Main from '@/views/Main'
 import styled from 'styled-components'
-import { DataProvider } from '@/DataContext'
 import Editor from '@/views/Editor'
 import { SnackbarProvider } from '@/common/SnackbarContext/SnackbarProvider'
 import About from '@/views/About'
@@ -101,23 +100,21 @@ const App = () => {
 
   const [language] = useStorage('language')
   useEffect(() => {
-    i18n.changeLanguage(language as 'zh' | 'cn')
+    i18n.changeLanguage(language as 'zh' | 'en' || 'zh')
   }, [language])
 
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <DataProvider>
-          <LayoutDiv>
-            <Card sx={{ borderRadius: 0 }}>
-              <CardContent>
-                <SnackbarProvider>
-                  <RouterProvider router={router}></RouterProvider>
-                </SnackbarProvider>
-              </CardContent>
-            </Card>
-          </LayoutDiv>
-        </DataProvider>
+        <LayoutDiv>
+          <Card sx={{ borderRadius: 0 }}>
+            <CardContent>
+              <SnackbarProvider>
+                <RouterProvider router={router}></RouterProvider>
+              </SnackbarProvider>
+            </CardContent>
+          </Card>
+        </LayoutDiv>
       </ThemeProvider>
     </React.StrictMode>
   )

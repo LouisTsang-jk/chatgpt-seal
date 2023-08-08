@@ -8,8 +8,8 @@ import useStorage from "@/hooks/useStorage"
 import { useSnackbar } from "@/common/SnackbarContext"
 import useKey from "react-use/lib/useKey"
 import { useNavigate } from "react-router-dom"
-import { StorageKey } from "@/DataContext"
 import { useTranslation } from "react-i18next"
+import { StorageKey } from "@/globalState"
 
 interface FormValues {
   title: string

@@ -18,9 +18,8 @@ import ArticleIcon from '@mui/icons-material/Article'
 import SettingsIcon from '@mui/icons-material/Settings'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { DataContext, ListType, StorageKey } from '@/DataContext'
-import { useContext, useEffect } from 'react'
-import { useToggle } from 'react-use'
+import globalState, { ListType, StorageKey } from '@/globalState'
+import { useEffect, useState } from 'react'
 import Confirm from '../Confirm'
 import useStorage from '@/hooks/useStorage'
 import { useSnackbar } from '@/common/SnackbarContext'
@@ -66,13 +65,13 @@ const ActionBtnGroupDiv = styled.div`
 
 export default function Toolbar() {
   const { t } = useTranslation()
-  const { templateList, setTemplateList } = useContext(DataContext)
-  const { listType, setListType } = useContext(DataContext)
-  const { isBatchOperationActive, setIsBatchOperationActive } =
-    useContext(DataContext)
 
-  const [disabledBatchAction, disabledBatchActionChange] = useToggle(true)
-  const [deleteDialogVisible, deleteDialogVisibleChange] = useToggle(false)
+  const { templateList, listType, isBatchOperationActive } = globalState
+
+  const [disabledBatchAction, disabledBatchActionChange] =
+    useState<boolean>(true)
+  const [deleteDialogVisible, deleteDialogVisibleChange] =
+    useState<boolean>(false)
 
   const { exportToJsonFile } = useJsonExport()
 
@@ -81,41 +80,43 @@ export default function Toolbar() {
   const { openSnackbar } = useSnackbar()
 
   useEffect(() => {
-    for (const template of templateList) {
+    for (const template of templateList.value) {
       if (template.checked) {
+        console.log('template', template)
         disabledBatchActionChange(false)
         return
       }
     }
     disabledBatchActionChange(true)
-  }, [templateList])
+  }, [templateList.value])
 
   const handleBatchDelete = (agree: boolean) => {
     if (!agree) return
-    const updateTemplateList = templateList.filter((template) => {
+    const updateTemplateList = templateList.value.filter((template) => {
       return !template.checked
     })
     setTemplateStorage([...updateTemplateList])
-    setTemplateList([...updateTemplateList])
+    templateList.value = [...updateTemplateList]
     openSnackbar(t('Delete Template Success'))
     deleteDialogVisibleChange(false)
-    setIsBatchOperationActive(false)
+    isBatchOperationActive.value = false
   }
 
   const onListTypeChange = (
     evt: React.MouseEvent<HTMLElement>,
-    listType: ListType
+    type: ListType
   ) => {
-    evt
-    listType && setListType(listType)
+    if (type && evt) {
+      globalState.listType.value = type
+    }
   }
 
   const onExport = () => {
-    exportToJsonFile(templateList)
+    exportToJsonFile(templateList.value)
   }
 
   const control = {
-    value: listType,
+    value: listType.value,
     onChange: onListTypeChange,
     exclusive: true
   }
@@ -134,7 +135,7 @@ export default function Toolbar() {
               <ArticleIcon />
             </Tooltip>
           </ToggleButton>
-          {!isBatchOperationActive && (
+          {!isBatchOperationActive.value && (
             <ToggleButton value="hot" key="hot">
               <Tooltip title={t('Recommended templates')}>
                 <WhatshotIcon />
@@ -155,9 +156,9 @@ export default function Toolbar() {
             </SearchContainerDiv>
           </>
         )}
-        {listType === ListType.regular && (
+        {listType.value === ListType.regular && (
           <ActionBtnGroupDiv>
-            {!isBatchOperationActive && (
+            {!isBatchOperationActive.value && (
               <>
                 <Link to="/create">
                   <Tooltip title={t('Create a new Template')}>
@@ -188,7 +189,7 @@ export default function Toolbar() {
               <ToggleButton
                 value="check"
                 aria-label="Batch operation"
-                selected={isBatchOperationActive}
+                selected={isBatchOperationActive.value}
                 sx={{
                   border: 0,
                   borderRadius: '50%',
@@ -196,13 +197,14 @@ export default function Toolbar() {
                   margin: '0 4px'
                 }}
                 onChange={() =>
-                  setIsBatchOperationActive(!isBatchOperationActive)
+                  (isBatchOperationActive.value =
+                    !isBatchOperationActive.value)
                 }
               >
                 <ChecklistIcon />
               </ToggleButton>
             </Tooltip>
-            {isBatchOperationActive && (
+            {isBatchOperationActive.value && (
               <Tooltip
                 title={
                   disabledBatchAction
@@ -228,7 +230,7 @@ export default function Toolbar() {
                 </Box>
               </Tooltip>
             )}
-            {!isBatchOperationActive && (
+            {!isBatchOperationActive.value && (
               <>
                 <Link to="setting">
                   <Tooltip title={t('Setting')}>

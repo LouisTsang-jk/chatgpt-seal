@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react"
-import styled from "styled-components"
+import { useEffect } from 'react'
+import styled from 'styled-components'
 import {
   Box,
   Checkbox,
@@ -7,12 +7,12 @@ import {
   ListItemIcon,
   ListItemText,
   Typography
-} from "@mui/material"
-import { DataContext, ListType, StorageKey } from "@/DataContext"
-import useStorage from "@/hooks/useStorage"
-import EmptyIcon from "@mui/icons-material/Inbox"
-import HotPromptZhList from "@/conf/prompts_zh.json"
-import HotPromptEnList from "@/conf/prompts.json"
+} from '@mui/material'
+import globalState, { ListType, StorageKey } from '@/globalState'
+import useStorage from '@/hooks/useStorage'
+import EmptyIcon from '@mui/icons-material/Inbox'
+import HotPromptZhList from '@/conf/prompts_zh.json'
+import HotPromptEnList from '@/conf/prompts.json'
 import { useTranslation } from 'react-i18next'
 
 const TemplateDescriptionSpan = styled.span`
@@ -31,64 +31,64 @@ const TruncateSpan = styled.span`
   white-space: nowrap;
 `
 export default function List() {
-  const { templateList, setTemplateList } = useContext(DataContext)
-  const { isBatchOperationActive } = useContext(DataContext)
-  const { listType } = useContext(DataContext)
+  const { templateList, isBatchOperationActive, listType } = globalState
   const { t } = useTranslation()
 
   const [language] = useStorage('language')
   const [templateStorage] = useStorage<Template[]>(StorageKey)
 
   useEffect(() => {
-    if (listType === ListType.regular) {
-      setTemplateList(templateStorage || [])
+    if (listType.value === ListType.regular) {
+      templateList.value = templateStorage || []
     }
-    if (listType === ListType.hot) {
-      const HotPromptList = language === 'zh' ? HotPromptZhList : HotPromptEnList
-      setTemplateList((HotPromptList.map((prompt, promptIndex) => ({
-        ...prompt,
-        id: `${promptIndex}`
-      })) as Template[]) || [])
+    if (listType.value === ListType.hot) {
+      const hotPromptList =
+        language === 'zh' ? HotPromptZhList : HotPromptEnList
+      templateList.value =
+        (hotPromptList.map((prompt, promptIndex) => ({
+          ...prompt,
+          id: `${promptIndex}`
+        })) as Template[]) || []
     }
-  }, [templateStorage, listType, language])
+  }, [templateStorage, listType.value, language])
 
-  const handleToggle = (template: Template) => {
-    if (!isBatchOperationActive) {
+  const onListItemClick = (template: Template) => {
+    if (!isBatchOperationActive.value) {
       fillTextarea(template)
       return
     }
     template.checked = !template.checked
-    setTemplateList([...templateList])
+    templateList.value = [...templateList.value]
   }
 
   const fillTextarea = (template: Template) => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const tabId = tabs[0].id as number
-      chrome.tabs.sendMessage(
-        tabId,
-        { type: "fill", data: {
+      chrome.tabs.sendMessage(tabId, {
+        type: 'fill',
+        data: {
           template: template.body
-        }}
-      )
+        }
+      })
     })
   }
 
   return (
-    <Box sx={{marginTop: '8px', maxHeight: '400px'}}>
-      {templateList.map((template, templateIndex: number) => (
+    <Box sx={{ marginTop: '8px', maxHeight: '400px' }}>
+      {templateList.value.map((template, templateIndex: number) => (
         <ListItemButton
           dense
           component="li"
           key={templateIndex}
-          sx={{ padding: "0 8px" }}
-          onClick={() => handleToggle(template)}
+          sx={{ padding: '0 8px' }}
+          onClick={() => onListItemClick(template)}
         >
-          {isBatchOperationActive && (
-            <ListItemIcon sx={{marginLeft: '-8px', minWidth: 'auto'}}>
+          {isBatchOperationActive.value && (
+            <ListItemIcon sx={{ marginLeft: '-8px', minWidth: 'auto' }}>
               <Checkbox
                 size="small"
                 checked={template.checked || false}
-                inputProps={{ "aria-label": "controlled" }}
+                inputProps={{ 'aria-label': 'controlled' }}
               />
             </ListItemIcon>
           )}
@@ -108,7 +108,7 @@ export default function List() {
           />
         </ListItemButton>
       ))}
-      {templateList.length === 0 && (
+      {templateList.value.length === 0 && (
         <Box
           display="flex"
           flexDirection="column"
@@ -117,7 +117,9 @@ export default function List() {
           height="100%"
         >
           <EmptyIcon color="secondary" style={{ fontSize: 60 }} />
-          <Typography color="secondary" variant="h6">{t('No templates, please create one first')}</Typography>
+          <Typography color="secondary" variant="h6">
+            {t('No templates, please create one first')}
+          </Typography>
         </Box>
       )}
     </Box>
