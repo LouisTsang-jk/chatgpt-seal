@@ -3,9 +3,9 @@
   "name": "ChatGPT Seal",
   "description": "帮助用户在 ChatGPT 的页面上快速输入预设的提示。避免了反复输入相同问题的繁琐操作，让你的交流更加便捷高效。",
   "author": "LouisTsang",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "action": {
-    "default_popup": "/index.html"
+    "default_popup": "index.html"
   },
   "icons": {
     "128": "logo.png"
@@ -22,7 +22,7 @@
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],
-      "js": ["/content.js"]
+      "js": ["src/content.ts"]
     }
   ]
 }

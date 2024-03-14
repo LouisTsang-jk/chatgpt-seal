@@ -1,11 +1,12 @@
 {
   "name": "chatgpt-seal",
   "private": true,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && cp manifest.json dist/manifest.json && cp logo.png dist/logo.png",
+    "build": "tsc && vite build",
+    "build:legacy": "tsc && vite build && cp manifest.json dist/manifest.json && cp logo.png dist/logo.png",
     "build:zip": "npm run build && cd dist && zip -r ../ChatGPT_Seal.zip .",
     "i18n": "node scripts/collect-i18n-values.mjs",
     "watch": "vite build --watch",
@@ -33,6 +34,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@crxjs/vite-plugin": "2.0.0-beta.23",
     "@types/chrome": "^0.0.242",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",

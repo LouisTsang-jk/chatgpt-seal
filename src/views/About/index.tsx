@@ -1,22 +1,19 @@
-import { Box, Container, Link, Typography } from "@mui/material"
-import GitHubIcon from "@mui/icons-material/GitHub"
-import EmailIcon from "@mui/icons-material/Email"
-import HelpIcon from "@mui/icons-material/Help"
-import FeedbackIcon from "@mui/icons-material/Feedback"
+import { Box, Container, Link, Typography } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import EmailIcon from '@mui/icons-material/Email'
+import HelpIcon from '@mui/icons-material/Help'
+import FeedbackIcon from '@mui/icons-material/Feedback'
 import { useTranslation } from 'react-i18next'
-import RouteBreadcrumbs from "@/views/components/RouteBreadcrumbs"
+import RouteBreadcrumbs from '@/views/components/RouteBreadcrumbs'
 
 export default function About() {
   const { t } = useTranslation()
   return (
-    <Container
-      sx={{ maxHeight: "100vh" }}
-      style={{ padding: 0 }}
-    >
+    <Container sx={{ maxHeight: '100vh' }} style={{ padding: 0 }}>
       <RouteBreadcrumbs text={t('About')} />
       <Box my={1}>
         <Typography variant="h6">Version</Typography>
-        <Typography variant="body1">0.1.3(2023/08/09)</Typography>
+        <Typography variant="body1">0.1.4(2024/03/14)</Typography>
       </Box>
 
       <Box my={1}>
